@@ -18,12 +18,11 @@ public class GenreRepo implements GenericRepo<Genre>{
 	@Override
 	public Genre add(Genre g) {
 		
-		String sql = "insert into genres values (default, ?, ?) returning *;";
+		String sql = "insert into genres values (default, ?) returning *;";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, g.getName());
-			ps.setInt(2, g.getSeniorEditor().getId());
 			ResultSet rs = ps.executeQuery();
 		
 			if (rs.next()) {
@@ -88,8 +87,7 @@ public class GenreRepo implements GenericRepo<Genre>{
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, g.getSeniorEditor().getId());
-			ps.setInt(2, g.getId());
+			ps.setInt(1, g.getId());
 			
 			return ps.execute();
 			
@@ -124,9 +122,6 @@ public class GenreRepo implements GenericRepo<Genre>{
 		Genre g = new Genre();
 		g.setId(rs.getInt("id"));
 		g.setName(rs.getString("name"));
-		
-		Editor senior_editor = (new EditorRepo()).getById(rs.getInt("senior_editor"));
-		g.setSeniorEditor(senior_editor);
 		
 		return g;
 	}

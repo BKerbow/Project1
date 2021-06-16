@@ -4,15 +4,28 @@ public class Editor {
 	private Integer id;
 	private String firstName;
 	private String lastName;
-	private String jobTitle;
+	private String username;
+	private String password;
 	
 	public Editor() {}
 
-	public Editor(String firstName, String lastName, String jobTitle) {
+	public Editor(String firstName, String lastName) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.jobTitle = jobTitle;
+	}
+
+	public Editor(Integer id, String firstName, String lastName) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
+	public Editor(String firstName, String lastName, String username, String password) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.password = password;
 	}
 
 	public Integer getId() {
@@ -30,22 +43,32 @@ public class Editor {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
+	
 	public String getLastName() {
 		return lastName;
 	}
-
-	public void setLastname(String lastName) {
+	
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
-	public String getJobTitle() {
-		return jobTitle;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	
 
 	@Override
 	public int hashCode() {
@@ -53,8 +76,9 @@ public class Editor {
 		int result = 1;
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((jobTitle == null) ? 0 : jobTitle.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -77,23 +101,28 @@ public class Editor {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (jobTitle == null) {
-			if (other.jobTitle != null)
-				return false;
-		} else if (!jobTitle.equals(other.jobTitle))
-			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
 				return false;
 		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Editor [id=" + id + ", firstName=" + firstName + ", lastname=" + lastName + ", jobTitle=" + jobTitle
-				+ "]";
+		return "Editor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
+				+ ", password=" + password + "]";
 	}
 
 }

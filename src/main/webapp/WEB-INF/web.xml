@@ -7,7 +7,7 @@
   
   <servlet>
   	<servlet-name>FrontController</servlet-name>
-  	<servlet-class>com.revature.servlets.FrontControllerServlet</servlet-class>
+  	<servlet-class>dev.kerbow.servlets.FrontControllerServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>

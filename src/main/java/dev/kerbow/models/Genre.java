@@ -3,11 +3,15 @@ package dev.kerbow.models;
 public class Genre {
 	private Integer id;
 	private String name;
-	private Editor seniorEditor;
 	
 	public Genre() {}
 
 	public Genre(String name) {
+		this.name = name;
+	}
+	
+	public Genre(Integer id, String name) {
+		this.id = id;
 		this.name = name;
 	}
 
@@ -27,21 +31,13 @@ public class Genre {
 		this.name = name;
 	}
 
-	public Editor getSeniorEditor() {
-		return seniorEditor;
-	}
-
-	public void setSeniorEditor(Editor seniorEditor) {
-		this.seniorEditor = seniorEditor;
-	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((seniorEditor == null) ? 0 : seniorEditor.hashCode());
 		return result;
 	}
 
@@ -54,27 +50,19 @@ public class Genre {
 		if (getClass() != obj.getClass())
 			return false;
 		Genre other = (Genre) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id)
 			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (seniorEditor == null) {
-			if (other.seniorEditor != null)
-				return false;
-		} else if (!seniorEditor.equals(other.seniorEditor))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Genre [id=" + id + ", name=" + name + ", seniorEditor=" + seniorEditor + "]";
+		return "Genre [id=" + id + ", name=" + name + "]";
 	}
 	
 	

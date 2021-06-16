@@ -49,7 +49,6 @@ public class Utils {
 	
 	public static void loadEntries() {
 		Map<Integer, GEJoin> map = gejr.getAll();
-		List<GEJoin> list = new ArrayList<GEJoin>(map.values());
 		
 		for (GEJoin j : map.values()) {
 			Genre g = j.getGenre();
@@ -57,6 +56,15 @@ public class Utils {
 			
 			Set<Genre> gSet = eToG.get(e);
 			Set<Editor> eSet = gToE.get(g);
+			
+			if(gSet == null) gSet = new HashSet<Genre>();
+			if(eSet == null) eSet = new HashSet<Editor>();
+			
+			gSet.add(g);
+			eSet.add(e);
+			
+			eToG.put(e, gSet);
+			gToE.put(g, eSet);
 		}
 	}
 
