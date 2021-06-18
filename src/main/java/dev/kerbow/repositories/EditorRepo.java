@@ -7,93 +7,93 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import dev.kerbow.models.Editor;
+import dev.kerbow.utils.HibernateUtil;
 import dev.kerbow.utils.JDBCConnection;
 
 public class EditorRepo implements GenericRepo<Editor> {
-private Connection conn = JDBCConnection.getConnection();
-	
+	private Connection conn = JDBCConnection.getConnection();
+
 	@Override
 	public Editor add(Editor e) {
-		
-		String sql = "insert into editors values(default, ?, ?, ?) returning *;";
-		
+		Session s = HibernateUtil.getSession();
+
 		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, e.getFirstName());
-			ps.setString(2, e.getLastName());
-			ps.setString(3, e.getUsername());
-			ps.setString(4, e.getPassword());
-			ResultSet rs = ps.executeQuery();
-			
-			if (rs.next()) {
-				e.setId(rs.getInt("id"));
-				return e;
-			}
-			
-		} catch (SQLException ex) {
+			s.beginTransaction();
+			s.save(e);
+			s.getTransaction().commit();
+		} catch (HibernateException ex) {
 			ex.printStackTrace();
+		} finally {
+			s.close();
 		}
-		
 		return null;
 	}
 
 	@Override
 	public Editor getById(Integer id) {
-		
-		String sql = "select * from editors where id = ?;";
-	
-		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, id);
-			ResultSet rs = ps.executeQuery();
-			
-			if (rs.next()) return this.make(rs);
+		//Get a Session from the Session Factory
+		Session s = HibernateUtil.getSession();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+		Editor e = s.get(Editor.class, id);
+
+		//ALWAYS close your session
+		s.close();
+		return e;
 	}
-	
+
 	public Editor getByUsernameAndPassword(String username, String password) {
-		String sql = "select * from editors where username = ? and \"password\" = ?;";
+		Session s = HibernateUtil.getSession();
+		Editor e = null;
+		
 		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, username);
-			ps.setString(2, password);
-			ResultSet rs = ps.executeQuery();
-		
-			if (rs.next()) return this.make(rs);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			CriteriaBuilder cb = s.getCriteriaBuilder();
+			CriteriaQuery<Editor> cr = cb.createQuery(Editor.class);
+			Root<Editor> root = cr.from(Editor.class);
+			
+			Predicate p1 = cb.equal(root.get("name"), username);
+			Predicate p2 = cb.equal(root.get("password"), password);
+			
+			cr.select(root).where(cb.and(p1, p2));
+			e = s.createQuery(cr).getSingleResult();
+		} catch(HibernateException ex) {
+			ex.printStackTrace();
+		} finally {
+			s.close();
 		}
-		
-		return null;
+		return e;
 	}
 
 	@Override
 	public Map<Integer, Editor> getAll() {
-		
+
 		String sql = "select * from editors;";
-		
+
 		try {
 			Map<Integer, Editor> map = new HashMap<Integer, Editor>();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
-			
+
 			while (rs.next()) {
 				Editor e = this.make(rs);
 				map.put(e.getId(), e);
 			}
-			
+
 			return map;
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
@@ -129,15 +129,15 @@ private Connection conn = JDBCConnection.getConnection();
 
 	@Override
 	public Editor make(ResultSet rs) throws SQLException {
-		
+
 		Editor e = new Editor();
-		
+
 		e.setId(rs.getInt("id"));
 		e.setFirstName(rs.getString("first_name"));
 		e.setLastName(rs.getString("last_name"));
 		e.setUsername(rs.getString("username"));
 		e.setPassword(rs.getString("password"));
-		
+
 		return e;
 	}
 }

@@ -1,6 +1,16 @@
 package dev.kerbow.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="editors", schema="Project1")
 public class Editor {
+	
+	@Id
+	@Column(name="id", insertable=false, updatable=false)
 	private Integer id;
 	private String firstName;
 	private String lastName;

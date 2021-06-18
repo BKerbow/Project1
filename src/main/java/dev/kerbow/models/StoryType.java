@@ -1,6 +1,16 @@
 package dev.kerbow.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="story_types", schema="Project1")
 public class StoryType {
+	
+	@Id
+	@Column(name="id", insertable=false, updatable=false)
 	private Integer id;
 	private String name;
 	private Integer points;

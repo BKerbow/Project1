@@ -1,44 +1,72 @@
 package dev.kerbow.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-public class FrontControllerServlet extends HttpServlet{
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		String uri = request.getRequestURI();
-		System.out.println(uri);
+import dev.kerbow.models.Author;
+import dev.kerbow.models.Genre;
+import dev.kerbow.models.Story;
+import dev.kerbow.models.StoryType;
+import dev.kerbow.repositories.AuthorRepo;
+import dev.kerbow.repositories.GenreRepo;
+import dev.kerbow.repositories.StoryRepo;
+import dev.kerbow.repositories.StoryTypeRepo;
 
-		uri = uri.substring("/Project1".length());
-		switch(uri) {
-		case "/add":
-			int i = Integer.parseInt(request.getParameter("num1"));
-			int j = Integer.parseInt(request.getParameter("num2"));
-
-			int k = i + j;
-
-			response.setContentType("text/plain");
-
-			response.getWriter().println("The sum is: " + k);
-			break;
-		case "/index.html":
-			String username = request.getParameter("username");
-			String password = request.getParameter("password");
-			System.out.println("u: " + username + ", p: " + password);
-			break;
-		case "/author_login":
-			System.out.println("Received author_login!");
-			break;
-		default: break;
-		}
+public class FrontControllerServlet extends HttpServlet {
+	class LoginInfo {
+		public String username;
+		public String password;
 	}
 
+	private Gson gson = new Gson();
+	public static HttpSession session;
+	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(Story.class, new Story.Deserializer());
+		gsonBuilder.setDateFormat("yyyy-MM-dd");
+		this.gson = gsonBuilder.create();
+		
+		String uri = request.getRequestURI();
+		System.out.println(uri);
+		String json;
+		
+		response.setHeader("Access-Control-Allow-Origin","*");		// Needed to avoid CORS violations
+		response.setHeader("Content-Type", "application/json");		// Needed to enable json data to be passed between front and back end
+
+		session = request.getSession();
+		
+		uri = uri.substring("/Project1/FrontController/".length());
+		
+		switch (uri) {
+		case "authors":
+			if (request.getMethod() == "GET") {
+				System.out.println("Getting all authors...");
+				List<Author> authors = new ArrayList<Author>(new AuthorRepo().getAll().values());
+				System.out.println(authors);
+				//response.setHeader("Access-Control-Allow-Origin", "*");
+				response.getWriter().append(gson.toJson(authors));
+				break;
+			}
+			//response.getWriter().append("authors.html");
+			break;
+		}
+		
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		doGet(request, response);
 	}
 }

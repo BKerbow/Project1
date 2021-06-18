@@ -1,12 +1,44 @@
 package dev.kerbow.models;
 
+import java.lang.reflect.Type;
 import java.sql.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
+import dev.kerbow.repositories.GenreRepo;
+import dev.kerbow.repositories.StoryTypeRepo;
+
+@Entity
+@Table(name="stories", schema="Project1")
 public class Story {
+	
+	@Id
+	@Column(name="id", insertable=false, updatable=false)
 	private Integer id;
 	private String title;
+	
+	@ManyToOne
+	@JoinColumn(name="genre")
 	private Genre genre;
+	
+	@ManyToOne
+	@JoinColumn(name="story_types")
 	private StoryType type;
+	
+	@ManyToOne
+	@JoinColumn(name="author")
 	private Author author;
 	private String description;
 	private String tagLine;
@@ -182,6 +214,24 @@ public class Story {
 				+ ", approvalStatus=" + approvalStatus + ", reason=" + reason + "]";
 	}
 	
-	
+	public static class Deserializer implements JsonDeserializer<Story>{
+
+		@Override
+		public Story deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)throws JsonParseException {
+			Story story = new Story();
+			JsonObject jo = json.getAsJsonObject();
+			story.setTitle(context.deserialize(jo.get("title"), String.class));
+			//Move this to Genre Services
+			GenreRepo gr = new GenreRepo();
+			story.setGenre(gr.getByName(context.deserialize(jo.get("gemre"), String.class)));
+			// TODO: move this to StoryTypeServices!!!
+			StoryTypeRepo str = new StoryTypeRepo();
+			story.setType(str.getByName(context.deserialize(jo.get("type"), String.class)));
+			story.setDescription(context.deserialize(jo.get("description"), String.class));
+			story.setTagLine(context.deserialize(jo.get("tagline"), String.class));
+			story.setCompletionDate(context.deserialize(jo.get("date"), Date.class));
+			return story;
+		}
+	}
 
 }

@@ -7,8 +7,17 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import dev.kerbow.models.Author;
-import dev.kerbow.models.Editor;
+import dev.kerbow.utils.HibernateUtil;
 import dev.kerbow.utils.JDBCConnection;
 
 public class AuthorRepo implements GenericRepo<Author> {
@@ -16,60 +25,53 @@ public class AuthorRepo implements GenericRepo<Author> {
 	
 	@Override
 	public Author add(Author a) {
-		String sql = "insert into authors values (default, ?, ?, ?, ?) returning *;";
+		Session s = HibernateUtil.getSession();
 		
 		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			
-			ps.setString(1, a.getFirstName());
-			ps.setString(2,  a.getLastName());
-			ps.setString(3, a.getBio());
-			ps.setInt(4,  a.getPoints());
-			ResultSet rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				a.setId(rs.getInt("id"));
-				return a;
-			}
-		} catch (SQLException e) {
+			s.beginTransaction();
+			s.save(a);
+			s.getTransaction().commit();
+		} catch (HibernateException e) {
 			e.printStackTrace();
+		} finally {
+			s.close();
 		}
-		
-		return null;
+		return a;
 	}
 
 	@Override
 	public Author getById(Integer id) {
-		String sql = "select * from authors where id = ?;";
 		
-		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, id);
-			
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) return this.make(rs);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+		//Get a Session from the Session Factory
+		Session s = HibernateUtil.getSession();
+				
+		Author a = s.get(Author.class, id);
+				
+		//ALWAYS close your session
+		s.close();
+		return a;
 	}
 	
 	public Author getByUsernameAndPassword(String username, String password) {
-		String sql = "select * from authors where username = ? and \"password\" = ?;";
-		try {
-			
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, username);
-			ps.setString(2, password);
-			ResultSet rs = ps.executeQuery();
-			
-			if (rs.next()) return this.make(rs);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		Session s = HibernateUtil.getSession();
+		Author a = null;
 		
-		return null;
+		try {
+			CriteriaBuilder cb = s.getCriteriaBuilder();
+			CriteriaQuery<Author> cr = cb.createQuery(Author.class);
+			Root<Author> root = cr.from(Author.class);
+			
+			Predicate p1 = cb.equal(root.get("name"), username);
+			Predicate p2 = cb.equal(root.get("password"), password);
+			
+			cr.select(root).where(cb.and(p1, p2));
+			a = s.createQuery(cr).getSingleResult();
+		} catch(HibernateException e) {
+			e.printStackTrace();
+		} finally {
+			s.close();
+		}
+		return a;
 	}
 
 	@Override
@@ -96,16 +98,13 @@ public class AuthorRepo implements GenericRepo<Author> {
 
 	@Override
 	public boolean update(Author a) {
-		String sql = "udpate authors set bio = ?, points = ? where id = ? returning *;";
-		
+		String sql = "update authors set bio = ?, points = ? where id = ? returning *;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, a.getBio());
-			ps.setInt(2,  a.getPoints());
+			ps.setInt(2, a.getPoints());
 			ps.setInt(3, a.getId());
-			
 			return ps.execute();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -115,8 +114,7 @@ public class AuthorRepo implements GenericRepo<Author> {
 
 	@Override
 	public boolean delete(Author a) {
-		String sql = "delete from authorsr where id = ?;";
-		
+		String sql = "delete from authors where id = ?;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, a.getId());

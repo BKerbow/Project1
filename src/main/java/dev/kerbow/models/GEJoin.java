@@ -1,6 +1,16 @@
 package dev.kerbow.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="genre_editor_join", schema="Project1")
 public class GEJoin {
+	
+	@Id
+	@Column(name="id", insertable=false, updatable=false)
 	private Integer id;
 	private Genre genre;
 	private Editor editor;
