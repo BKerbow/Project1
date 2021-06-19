@@ -40,6 +40,13 @@ function authorLogin(source){
 function editorLogin(source){
     //Everything happening here (outside of onreadystatechange) prepares data and sends it to server
     
+    console.log("logging in...");
+    let flag;
+    console.log(source)
+    if (source == editorLogin){
+        flag = "/editor_login";
+    }
+
     let editorLogIn = {
         username: document.getElementById("authorUsername").Value,
         password: document.getElementById("authorPassword"),value
