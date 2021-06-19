@@ -10,7 +10,7 @@ function authorLogin(source){
     }
 
     let authorLogIn = {
-        username: document.getElementById("authorUsername").Value,
+        username: document.getElementById("authorUsername").value,
         password: document.getElementById("authorPassword").value
     };
 
@@ -51,7 +51,7 @@ function editorLogin(source){
     }
 
     let editorLogIn = {
-        username: document.getElementById("authorUsername").Value,
+        username: document.getElementById("authorUsername").value,
         password: document.getElementById("authorPassword"),value
     };
 
