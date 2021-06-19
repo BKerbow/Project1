@@ -61,7 +61,7 @@ public class FrontControllerServlet extends HttpServlet {
 		uri = uri.substring("/Project1/FrontController/".length());
 		
 		switch (uri) {
-		case "authors":
+		case "/author_login":
 			//if (request.getMethod() == "GET") {
 				System.out.println("Getting all authors...");
 				List<Author> authors = new ArrayList<Author>(new AuthorRepo().getAll().values());
