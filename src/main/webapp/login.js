@@ -1,4 +1,5 @@
-let url = "http://localhost:8080/Project1/FrontController"
+let url = "http://localhost:8080/Project1/FrontController";
+let url2 = "https://catfact.ninja/breeds?limit=1";
 
 function authorLogin(source){
     //Everything happening here (outside of onreadystatechange) prepares data and sends it to server
@@ -20,13 +21,16 @@ function authorLogin(source){
 
     let xhttp = new XMLHttpRequest();
 
-    xhttp.open("POST", url, true);
+    xhttp.open("GET", url2, true);
     xhttp.send(json);
+    
     console.log("sent json");
     console.log("The xhttp ready state is: " + xhttp.readyState);
     console.log("The xhttp status is: " + xhttp.status);
 
-    xhttp.onReadyStateChange = () => {
+    xhttp.onReadyStateChange = receiveData;
+    
+    function receiveData(){
         console.log(readyState);
         console.log(status);
         if (xhttp.readyState == 4){
