@@ -1,5 +1,4 @@
 let url = 'http://localhost:8080/Project1/FrontController';
-let url2 = 'https://pokeapi.co/api/v2/pokemon/';
 
 function authorLogin(source){
     //Everything happening here (outside of onreadystatechange) prepares data and sends it to server
@@ -21,7 +20,7 @@ function authorLogin(source){
 
     let xhttp = new XMLHttpRequest();
 
-    xhttp.open("POST", url2, true);
+    xhttp.open("POST", url, true);
     xhttp.send(json);
 
     console.log("sent json");
