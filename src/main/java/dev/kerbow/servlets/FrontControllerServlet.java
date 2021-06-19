@@ -99,6 +99,22 @@ public class FrontControllerServlet extends HttpServlet {
 			}
 			break;
 		}
+		case "author_login": {
+			System.out.println("I got the author login!");
+			LoginInfo info = this.gson.fromJson(request.getReader(), LoginInfo.class);
+			Author a = new AuthorRepo().getByUsernameAndPassword(info.username, info.password);
+			if (a == null) {
+				System.out.println("An Author with those credentials was not found.");
+			}
+			if (a != null) {
+				System.out.println("The Author " + a.getFirstName() + " has logged in!");
+				session.setAttribute("logged_in", a);
+				response.getWriter().append("authors.html");
+			} else {
+				System.out.println("Failed to login with provided credentials credentials: username=" + info.username + " password=" + info.password);
+			}
+			break;
+		}
 		case "logout": {
 			System.out.println("Logging out!");
 			session.invalidate();
@@ -207,10 +223,13 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 		System.out.println("I got the author login!");
 		LoginInfo info = this.gson.fromJson(request.getReader(), LoginInfo.class);
 		Author a = new AuthorRepo().getByUsernameAndPassword(info.username, info.password);
+		if (a == null) {
+			System.out.println("An Author with those credentials was not found.");
+		}
 		if (a != null) {
 			System.out.println("The Author " + a.getFirstName() + " has logged in!");
 			session.setAttribute("logged_in", a);
-			response.getWriter().append("newwork.html");
+			response.getWriter().append("authors.html");
 		} else {
 			System.out.println("Failed to login with provided credentials credentials: username=" + info.username + " password=" + info.password);
 		}

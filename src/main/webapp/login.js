@@ -37,7 +37,8 @@ function authorLogin(source){
                 //test to see if javascript is talking
                 console.log("Request is ready and sending.");
                 //load new html page sent from servlet
-                window.location.href = xhttp.responseText;
+                //window.location.href = xhttp.responseText;
+                console.log("Switching to authors.html!");
             }
         }
     }
