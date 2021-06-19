@@ -66,7 +66,7 @@ public class FrontControllerServlet extends HttpServlet {
 				System.out.println("Getting all authors...");
 				List<Author> authors = new ArrayList<Author>(new AuthorRepo().getAll().values());
 				System.out.println(authors);
-				//response.setHeader("Access-Control-Allow-Origin", "*");
+				response.setHeader("Access-Control-Allow-Origin", "*");
 				response.getWriter().append(gson.toJson(authors));
 				//break;
 			//}
