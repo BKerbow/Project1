@@ -3,50 +3,68 @@ package dev.kerbow.models;
 import java.lang.reflect.Type;
 import java.sql.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
+import dev.kerbow.repositories.AuthorRepo;
 import dev.kerbow.repositories.GenreRepo;
 import dev.kerbow.repositories.StoryTypeRepo;
 
-@Entity
-@Table(name="stories", schema="Project1")
 public class Story {
-	
-	@Id
-	@Column(name="id", insertable=false, updatable=false)
+	//Why is this enum here? What's it for?
+	public enum StatusLevel {
+		SUBMITTED,
+		ASSISTANT_APPROVED,
+		ASSISTANT_URGENT,
+		EDITOR_APPROVED,
+		EDITOR_URGENT,
+		SENIOR_APPROVED,
+		SENIOR_URGENT,
+		DRAFT_APPROVED
+	}
 	private Integer id;
 	private String title;
-	
-	@ManyToOne
-	@JoinColumn(name="genre")
 	private Genre genre;
-	
-	@ManyToOne
-	@JoinColumn(name="story_types")
 	private StoryType type;
-	
-	@ManyToOne
-	@JoinColumn(name="author")
 	private Author author;
 	private String description;
 	private String tagLine;
 	private Date completionDate;
+	private Date submissionDate;
 	private String approvalStatus;
 	private String reason;
 	
 	public Story() {}
+	
+	public static String getStatusString(StatusLevel level) {
+		switch (level) {
+			case SUBMITTED: return "submitted";
+			case ASSISTANT_APPROVED: return "assistant_approved";
+			case ASSISTANT_URGENT: return "assistant_urgent";
+			case EDITOR_APPROVED: return "editor_approved";
+			case EDITOR_URGENT: return "editor_urgent";
+			case SENIOR_APPROVED: return "senior_approved";
+			case SENIOR_URGENT: return "senior_urgent";
+			case DRAFT_APPROVED: return "draft_approved";
+			default: return null;
+		}
+	}
+	
+	public static StatusLevel getStatusLevel(String level) {
+		switch (level.toLowerCase()) {
+			case "submitted": return StatusLevel.SUBMITTED;
+			case "assistant_approved": return StatusLevel.ASSISTANT_APPROVED;
+			case "assistant_urgent": return StatusLevel.ASSISTANT_URGENT;
+			case "editor_approved": return StatusLevel.EDITOR_APPROVED;
+			case "editor_urgent": return StatusLevel.EDITOR_URGENT;
+			case "senior_approved": return StatusLevel.SENIOR_APPROVED;
+			case "senior_urgent": return StatusLevel.SENIOR_URGENT;
+			case "draft_approved": return StatusLevel.DRAFT_APPROVED;
+			default: return null;
+		}
+	}
 
 	public Integer getId() {
 		return id;
@@ -112,6 +130,14 @@ public class Story {
 		this.completionDate = completionDate;
 	}
 
+	public Date getSubmissionDate() {
+		return submissionDate;
+	}
+
+	public void setSubmissionDate(Date submissionDate) {
+		this.submissionDate = submissionDate;
+	}
+
 	public String getApprovalStatus() {
 		return approvalStatus;
 	}
@@ -139,6 +165,7 @@ public class Story {
 		result = prime * result + ((genre == null) ? 0 : genre.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((reason == null) ? 0 : reason.hashCode());
+		result = prime * result + ((submissionDate == null) ? 0 : submissionDate.hashCode());
 		result = prime * result + ((tagLine == null) ? 0 : tagLine.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -189,6 +216,11 @@ public class Story {
 				return false;
 		} else if (!reason.equals(other.reason))
 			return false;
+		if (submissionDate == null) {
+			if (other.submissionDate != null)
+				return false;
+		} else if (!submissionDate.equals(other.submissionDate))
+			return false;
 		if (tagLine == null) {
 			if (other.tagLine != null)
 				return false;
@@ -211,27 +243,41 @@ public class Story {
 	public String toString() {
 		return "Story [id=" + id + ", title=" + title + ", genre=" + genre + ", type=" + type + ", author=" + author
 				+ ", description=" + description + ", tagLine=" + tagLine + ", completionDate=" + completionDate
-				+ ", approvalStatus=" + approvalStatus + ", reason=" + reason + "]";
+				+ ", submissionDate=" + submissionDate + ", approvalStatus=" + approvalStatus + ", reason=" + reason
+				+ "]";
 	}
 	
-	public static class Deserializer implements JsonDeserializer<Story>{
-
+	public static class Deserializer implements JsonDeserializer<Story> {
 		@Override
-		public Story deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)throws JsonParseException {
+		public Story deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			Story story = new Story();
 			JsonObject jo = json.getAsJsonObject();
+			if (jo.has("author")) {
+				// TODO: move this to AuthorServices
+//				AuthorRepo ar = new AuthorRepo();
+				story.setAuthor(context.deserialize(jo.get("author"), Author.class));
+			}
+			if (jo.has("approvalStatus")) {
+				story.setApprovalStatus(context.deserialize(jo.get("approvalStatus"), String.class));
+			}
+			if (jo.has("reason")) {
+				story.setApprovalStatus(context.deserialize(jo.get("reason"), String.class));
+			}
+			if (jo.has("id")) {
+				story.setId(context.deserialize(jo.get("id"), Integer.class));
+			}
 			story.setTitle(context.deserialize(jo.get("title"), String.class));
-			//Move this to Genre Services
-			GenreRepo gr = new GenreRepo();
-			story.setGenre(gr.getByName(context.deserialize(jo.get("gemre"), String.class)));
+			// TODO: move this to GenreServices!!!
+//			GenreRepo gr = new GenreRepo();
+			story.setGenre(context.deserialize(jo.get("genre"), Genre.class));
 			// TODO: move this to StoryTypeServices!!!
-			StoryTypeRepo str = new StoryTypeRepo();
-			story.setType(str.getByName(context.deserialize(jo.get("type"), String.class)));
+//			StoryTypeRepo str = new StoryTypeRepo();
+			story.setType(context.deserialize(jo.get("type"), StoryType.class));
 			story.setDescription(context.deserialize(jo.get("description"), String.class));
 			story.setTagLine(context.deserialize(jo.get("tagline"), String.class));
 			story.setCompletionDate(context.deserialize(jo.get("date"), Date.class));
+			story.setSubmissionDate(context.deserialize(jo.get("submission_date"), Date.class));
 			return story;
 		}
 	}
-
 }

@@ -12,21 +12,32 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 
 import dev.kerbow.models.Author;
+import dev.kerbow.models.Editor;
 import dev.kerbow.models.Genre;
 import dev.kerbow.models.Story;
 import dev.kerbow.models.StoryType;
+
 import dev.kerbow.repositories.AuthorRepo;
+import dev.kerbow.repositories.EditorRepo;
 import dev.kerbow.repositories.GenreRepo;
 import dev.kerbow.repositories.StoryRepo;
 import dev.kerbow.repositories.StoryTypeRepo;
+import dev.kerbow.utils.Utils;
 
 public class FrontControllerServlet extends HttpServlet {
-//	class LoginInfo {
-//		public String username;
-//		public String password;
-//	}
+	class LoginInfo {
+		public String username;
+		public String password;
+	}
+	
+	public FrontControllerServlet() {
+		Utils.loadEntries();
+	}
 
 	private Gson gson = new Gson();
 	public static HttpSession session;

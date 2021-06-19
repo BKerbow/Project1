@@ -15,15 +15,15 @@
     <h3>To begin, please log in.</h3> 
     <br>
     <h3>If you are an Author, use the below fields.</h3>
-    <input type="text" id="username">
-    <input type="password" id="password">
-    <button type="button" onclick="getData()">Author Login</button>
+    <input type="text" id="authorUsername">
+    <input type="password" id="authorPassword">
+    <button type="button" class="login_buttons" value="Login" onclick="login('Author')">Author Login</button>
     <br>
     <br>
     <h3>If you are an Editor, please use the below fields.</h3>
-    <input type="text" id="username">
-    <input type="password" id="password">
-    <button type="button" onclick="getData()">Editor Login</button>
+    <input type="text" id="editorUsername">
+    <input type="password" id="editorPassword">
+    <button type="button" onclick="editorLogin()">Editor Login</button>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
 </html>

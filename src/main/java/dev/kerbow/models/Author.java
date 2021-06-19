@@ -1,19 +1,14 @@
 package dev.kerbow.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.lang.reflect.Type;
 
-@Entity
-@Table(name="authors", schema="Project1")
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
 public class Author {
-	
-	@Id
-	@Column(name="id", insertable=false, updatable=false)
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	private String firstName;
 	private String lastName;
@@ -23,7 +18,7 @@ public class Author {
 	private String password;
 	
 	public Author() {}
-
+	
 	public Author(String firstName, String lastName, String bio) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -152,5 +147,21 @@ public class Author {
 	public String toString() {
 		return "Author [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", bio=" + bio + ", points="
 				+ points + ", username=" + username + ", password=" + password + "]";
+	}
+	
+	public static class Deserializer implements JsonDeserializer<Author> {
+		@Override
+		public Author deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			System.out.println("Deserializing!!!");
+			Author a = new Author();
+			JsonObject jo = json.getAsJsonObject();
+			a.setFirstName(context.deserialize(jo.get("first_name"), String.class));
+			a.setLastName(context.deserialize(jo.get("last_name"), String.class));
+			a.setBio(context.deserialize(jo.get("bio"), String.class));
+			a.setPoints(100);
+			a.setUsername(context.deserialize(jo.get("username"), String.class));
+			a.setPassword(context.deserialize(jo.get("password"), String.class));
+			return a;
+		}
 	}
 }

@@ -1,30 +1,19 @@
 package dev.kerbow.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="editors", schema="Project1")
 public class Editor {
-	
-	@Id
-	@Column(name="id", insertable=false, updatable=false)
 	private Integer id;
 	private String firstName;
 	private String lastName;
 	private String username;
 	private String password;
-	
-	public Editor() {}
 
+	public Editor() {}
+	
 	public Editor(String firstName, String lastName) {
-		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-
+	
 	public Editor(Integer id, String firstName, String lastName) {
 		this.id = id;
 		this.firstName = firstName;
@@ -53,11 +42,11 @@ public class Editor {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
+
 	public String getLastName() {
 		return lastName;
 	}
-	
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -77,8 +66,6 @@ public class Editor {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	
 
 	@Override
 	public int hashCode() {
@@ -134,5 +121,4 @@ public class Editor {
 		return "Editor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
 				+ ", password=" + password + "]";
 	}
-
 }

@@ -1,21 +1,11 @@
 package dev.kerbow.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="genres", schema="Project1")
 public class Genre {
-	
-	@Id
-	@Column(name="id", insertable=false, updatable=false)
 	private Integer id;
 	private String name;
 	
 	public Genre() {}
-
+	
 	public Genre(String name) {
 		this.name = name;
 	}
@@ -40,7 +30,6 @@ public class Genre {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -74,6 +63,4 @@ public class Genre {
 	public String toString() {
 		return "Genre [id=" + id + ", name=" + name + "]";
 	}
-	
-	
 }

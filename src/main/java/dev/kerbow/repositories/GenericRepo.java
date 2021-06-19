@@ -5,17 +5,18 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public interface GenericRepo<T> {
-	//Create
+	// Create
 	public T add(T t);
 	
-	//Read
+	// Read
 	public T getById(Integer id);
 	public Map<Integer, T> getAll();
 	
-	//Update
+	// Update
 	public boolean update(T t);
 	
-	//Delete
+	// Delete
 	public boolean delete(T t);
+	
 	public T make(ResultSet rs) throws SQLException;
 }
