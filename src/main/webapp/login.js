@@ -1,11 +1,11 @@
-let url = "http://localhost:8080/Project1/FrontController";
-let url2 = "https://catfact.ninja/breeds?limit=1";
+let url = 'http://localhost:8080/Project1/FrontController';
+let url2 = 'https://pokeapi.co/api/v2/pokemon/';
 
 function authorLogin(source){
     //Everything happening here (outside of onreadystatechange) prepares data and sends it to server
     console.log("logging in...");
     let flag;
-    console.log(source)
+
     if (source == authorLogin){
         flag = "/author_login";
     }
@@ -21,18 +21,18 @@ function authorLogin(source){
 
     let xhttp = new XMLHttpRequest();
 
-    xhttp.open("GET", url2, true);
+    xhttp.open("POST", url2, true);
     xhttp.send(json);
-    
+
     console.log("sent json");
     console.log("The xhttp ready state is: " + xhttp.readyState);
     console.log("The xhttp status is: " + xhttp.status);
 
-    xhttp.onReadyStateChange = receiveData;
+    xhttp.onreadystatechange = receiveData;
     
     function receiveData(){
-        console.log(readyState);
-        console.log(status);
+        console.log("The xhttp ready state is: " + xhttp.readyState);
+        console.log("The xhttp status is: " + xhttp.status);
         if (xhttp.readyState == 4){
             if(xhttp.status == 200){
                 //test to see if javascript is talking
