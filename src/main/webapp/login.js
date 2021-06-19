@@ -5,7 +5,10 @@ function authorLogin(source){
     console.log("logging in...");
     let flag;
     console.log(source)
-    if (source == authorLogin)
+    if (source == authorLogin){
+        flag = "/author_login";
+    }
+    
     let authorLogIn = {
         username: document.getElementById("authorUsername").Value,
         password: document.getElementById("authorPassword"),value
