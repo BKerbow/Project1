@@ -22,6 +22,9 @@ function authorLogin(source){
 
     xhttp.open("POST", url, true);
     xhttp.send(json);
+    console.log("sent json");
+    console.log("The xhttp ready state is: " + xhttp.readyState);
+    console.log("The xhttp status is: " + xhttp.status);
 
     xhttp.onReadyStateChange = () => {
         console.log(readyState);

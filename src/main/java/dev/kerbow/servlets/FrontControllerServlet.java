@@ -1,4 +1,4 @@
-package com.revature.servlets;
+package dev.kerbow.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,17 +69,17 @@ public class FrontControllerServlet extends HttpServlet {
 
 		session = request.getSession();
 		
-		uri = uri.substring("/Project_1/controller/".length());
+		uri = uri.substring("/Project1/controller/".length());
 		switch (uri) {
 			case "sign_up_author": {
 				System.out.println("Received author sign up!");
 				Author a = this.gson.fromJson(request.getReader(), Author.class);
 				if (a != null) {
 					a = new AuthorRepo().add(a);
-					System.out.println("Created new Author " + a + " and logged in!");
+					System.out.println("Created the new author " + a + " and logged in!");
 					session.setAttribute("logged_in", a);
 					// TODO: change this to "author_main.html" when it exits!!!
-					response.getWriter().append("editor_main.html");
+					response.getWriter().append("authors.html");
 				} else {
 					System.out.println("Failed to create new Author account!");
 				}
@@ -87,28 +87,28 @@ public class FrontControllerServlet extends HttpServlet {
 			}
 			// TODO: can editor login and author login be combined into the same thing? would require that login info across the two tables be unique
 			case "editor_login": {
-				System.out.println("Recieved editor_login!");
+				System.out.println("I got the editor login!");
 				LoginInfo info = this.gson.fromJson(request.getReader(), LoginInfo.class);
 				Editor e = new EditorRepo().getByUsernameAndPassword(info.username, info.password);
 				if (e != null) {
 					System.out.println("Editor " + e.getFirstName() + " has logged in!");
 					session.setAttribute("logged_in", e);
-					response.getWriter().append("editor_main.html");
+					response.getWriter().append("editors.html");
 				} else {
-					System.out.println("Failed to login with credentials: username=" + info.username + " password=" + info.password);
+					System.out.println("Failed to login with provided credentials credentials: username=" + info.username + " password=" + info.password);
 				}
 				break;
 			}
 			case "author_login": {
-				System.out.println("Received author_login!");
+				System.out.println("I got the author login!");
 				LoginInfo info = this.gson.fromJson(request.getReader(), LoginInfo.class);
 				Author a = new AuthorRepo().getByUsernameAndPassword(info.username, info.password);
 				if (a != null) {
-					System.out.println("Author " + a.getFirstName() + " has logged in!");
+					System.out.println("The Author " + a.getFirstName() + " has logged in!");
 					session.setAttribute("logged_in", a);
-					response.getWriter().append("story_proposal_form.html");
+					response.getWriter().append("newwork.html");
 				} else {
-					System.out.println("Failed to login with credentials: username=" + info.username + " password=" + info.password);
+					System.out.println("Failed to login with provided credentials credentials: username=" + info.username + " password=" + info.password);
 				}
 				break;
 			}
