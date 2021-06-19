@@ -29,7 +29,7 @@ function authorLogin(source){
     xhttp.onReadyStateChange = () => {
         console.log(readyState);
         console.log(status);
-        if (xhttp.readySate == 4){
+        if (xhttp.readyState == 4){
             if(xhttp.status == 200){
                 //test to see if javascript is talking
                 console.log("Request is ready and sending.");
