@@ -8,10 +8,10 @@ function authorLogin(source){
     if (source == authorLogin){
         flag = "/author_login";
     }
-    
+
     let authorLogIn = {
         username: document.getElementById("authorUsername").Value,
-        password: document.getElementById("authorPassword"),value
+        password: document.getElementById("authorPassword").value
     };
 
     console.log("login info:" + authorLogIn);
