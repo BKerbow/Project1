@@ -23,10 +23,10 @@ import dev.kerbow.repositories.StoryRepo;
 import dev.kerbow.repositories.StoryTypeRepo;
 
 public class FrontControllerServlet extends HttpServlet {
-	class LoginInfo {
-		public String username;
-		public String password;
-	}
+//	class LoginInfo {
+//		public String username;
+//		public String password;
+//	}
 
 	private Gson gson = new Gson();
 	public static HttpSession session;
@@ -39,7 +39,7 @@ public class FrontControllerServlet extends HttpServlet {
 		this.gson = gsonBuilder.create();
 		
 		String uri = request.getRequestURI();
-		System.out.println(uri);
+		System.out.println(uri);	
 		String json;
 		
 		response.setHeader("Access-Control-Allow-Origin","*");		// Needed to avoid CORS violations
@@ -51,14 +51,14 @@ public class FrontControllerServlet extends HttpServlet {
 		
 		switch (uri) {
 		case "authors":
-			if (request.getMethod() == "GET") {
+			//if (request.getMethod() == "GET") {
 				System.out.println("Getting all authors...");
 				List<Author> authors = new ArrayList<Author>(new AuthorRepo().getAll().values());
 				System.out.println(authors);
 				//response.setHeader("Access-Control-Allow-Origin", "*");
 				response.getWriter().append(gson.toJson(authors));
-				break;
-			}
+				//break;
+			//}
 			//response.getWriter().append("authors.html");
 			break;
 		}

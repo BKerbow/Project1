@@ -22,7 +22,7 @@ public class JDBCConnection {
 				props.load(propsInput);
 
 				String url = props.getProperty("url");
-				String username = props.getProperty("password");
+				String username = props.getProperty("username");
 				String password = props.getProperty("password");
 				String schema = props.getProperty("currentSchema");
 

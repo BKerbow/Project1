@@ -92,7 +92,6 @@ public class AuthorRepo implements GenericRepo<Author> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return null;
 	}
 

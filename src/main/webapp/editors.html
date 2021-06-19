@@ -4,16 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editors</title>
+    <title>Editor Menu</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<script src='editors.js'></script>
 </head>
 <body>
     <br>
-    <button type="button" onclick="getData()">Get Editors</button>
-
+    <h1>Welcome to the Editor Menu!</h1>
+    <br>
+    <p>In this page, I want the following information displayed:
+        1. A button that returns scripts relevant to the currently-logged in editor.
+        2. A Textbox that allows either:
+            A) For the editor to type out a request for further information.
+            B) For the editor to provide a reason why the script was denied.
+        3. A button that approves the script and sends it to the next editor.
+            A) For the senior editor, this is replaced by a final approval button.
+        4. Disable all other functionality if a story is marked HIGH PRIORITY.
+        5. A logout button.
+    </p>
+    <button type="button" onclick="getStories()">Go to Your Pending Stories</button>
+    <input type="text" id="request">
+    <input type="text" id="reason">
+    <button type="button" onclick="sendInfoRequest()">Submit an Info Request</button>
+    <button type="button" onclick="sendRejectionReason()">Reject a Script</button>
+    <button type="button" onclick="logout()">Logout</button>
     <div id="data">
 
-
     </div>
-    <script src='editors.js'></script>
+    <!-- Bootstrap Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
 </html>

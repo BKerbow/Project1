@@ -1,26 +1,30 @@
 console.log("page loaded!");
 
 function getData(){
-
+    console.log("getData called");
     let url = 'http://localhost:8080/Project1/FrontController/authors';
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = receiveData();
     xhttp.open('GET', url, true);
     xhttp.send();
 
+    let dataSection = document.getElementById('data');
+    dataSection.innerHTML = '';
+
         function receiveData() {
-            let dataSection = document.getElementById('data');
-            dataSection.innerHTML = '';
+            console.log(xhttp.readyState);
+            console.log(xhttp.status);
             if (xhttp.readyState == 4) {
                 if (xhttp.status == 200) {
-
-                    //window.location.href = xhttp.responseText;
+                    console.log("reached receiveData");
+                    //window.location.href = xhttp.responseText
+                   
                     let r = xhttp.responseText;
                     console.log(r);
     
                     r = JSON.parse(r);
                     console.log(r);
-    
+
                     // Create a table
                     let authorTable = document.createElement('table');
                     authorTable.id = 'authorTable';
@@ -49,24 +53,24 @@ function getData(){
                         tr.appendChild(tdName);
                         
                         // Author's Last Name
-                        let tdAge = document.createElement('td');
-                        tdAge.innerHTML = author.lastName;
+                        let tdLastName = document.createElement('td');
+                        tdLastName.innerHTML = author.lastName;
                         tr.appendChild(tdAge);
     
                         // Author's Bio
-                        let tdBreed = document.createElement('td');
-                        tdBreed.innerHTML = author.bio;
+                        let tdBio = document.createElement('td');
+                        tdBio.innerHTML = author.bio;
                         tr.appendChild(tdBio);
 
                         //Author's Points
-                        let tdPoitns = document.createElement('td');
-                        tdPoitns.innerHTML = author.points;
+                        let tdPoints = document.createElement('td');
+                        tdPoints.innerHTML = author.points;
                         tr.appendChild(tdPoints);
     
                         authorTable.appendChild(tr);
                     }
 
-                    dataSection.appendChild(catTable);
+                    dataSection.appendChild(authorTable);
                 }
             }
         }
