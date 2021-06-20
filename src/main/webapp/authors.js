@@ -46,3 +46,30 @@ function logout(){
         console.log("Switching to login.html!");
     }
 }
+
+function displayStories(){
+    console.log("displaying author's stories");
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url + "get_author_stories", true);
+    xhttp.send();
+
+    let dataSection = document.getElementById('data');
+    dataSection.innerHTML = '';
+
+    xhttp.onreadystatechange = () => {
+        if(xhttp.readyState == 4){
+            if(xhttp.status == 200){
+                window.location.assign('authors.html');
+
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    success: function(response){
+                        response = xhttp.responseText;
+                        console.log(response);
+                    }
+                })
+            }
+        }
+    }
+}

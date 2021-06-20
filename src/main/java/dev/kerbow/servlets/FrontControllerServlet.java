@@ -155,20 +155,20 @@ public class FrontControllerServlet extends HttpServlet {
 		//				System.out.println(story);
 		//				break;
 		//			}
-		//			case "get_proposals": {
-		//				Editor e = (Editor) session.getAttribute("logged_in");
-		//				if (e == null) System.out.println("editor null!!!!");
-		//				Set<Genre> genres = Utils.getGenres(e);
-		//				List<Story> stories = new ArrayList<Story>();
-		//				
-		//				for (Genre g : genres) stories.addAll(new StoryRepo().getAllByGenre(g));
-		//				
-		//				json = this.gson.toJson(stories);
-		//				
-		////				String[] jsons = new String[] { this.gson.toJson(stories), "" };
-		//				response.getWriter().append(json);
-		//				break;
-		//			}
+		case "get_author_stories": {
+			Author a = (Author) session.getAttribute("logged_in");
+			if (a == null) System.out.println("author null!");
+			Set<Genre> genres = Utils.getGenres(a);
+			List<Story> stories = new ArrayList<Story>();
+				
+			for (Genre g : genres) stories.addAll(new StoryRepo().getAllByGenre(g));
+			
+			json = this.gson.toJson(stories);
+			
+		//	String[] jsons = new String[] { this.gson.toJson(stories), "" };
+			response.getWriter().append(json);
+			break;
+		}
 		//			case "save_story_to_session": {
 		//				JsonElement root = JsonParser.parseReader(request.getReader());
 		//				session.setAttribute("story", root.getAsJsonObject());
