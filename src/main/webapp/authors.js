@@ -1,87 +1,32 @@
-console.log("page loaded!");
+let url = "http://localhost:8080/Project1/FrontController"
 
-function getData(){
-    console.log("getData called");
-    let url = 'http://localhost:8080/Project1/FrontController/authors';
+function getStories(){
+    //Everything happening here (outside of onreadystatechange) prepares data and sends it to server
+    console.log("clicked Story Submit Button");
+
     let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = receiveData();
-    xhttp.open('GET', url, true);
+
+    xhttp.open("POST", url + "/story_submit", true);
     xhttp.send();
 
-    let dataSection = document.getElementById('data');
-    dataSection.innerHTML = '';
+    console.log("sent json");
+    console.log("The xhttp ready state is: " + xhttp.readyState);
+    console.log("The xhttp status is: " + xhttp.status);
 
-        function receiveData() {
-            console.log(xhttp.readyState);
-            console.log(xhttp.status);
-            if (xhttp.readyState == 4) {
-                if (xhttp.status == 200) {
-                    console.log("reached receiveData");
-                    //window.location.href = xhttp.responseText
-                   
-                    let r = xhttp.responseText;
-                    console.log(r);
+    xhttp.onreadystatechange = receiveData;
     
-                    r = JSON.parse(r);
-                    console.log(r);
-
-                    // Create a table
-                    let authorTable = document.createElement('table');
-                    authorTable.id = 'authorTable';
-    
-                    // we will need: <tr> table row, <td> for each piece of data in that row, <th> for the header
-    
-                    // Create table header row
-                    let thRow = document.createElement('tr');
-                    let tHeaders = ['First Name', 'Last Name', 'Bio', 'Points'];
-                    for (let h of tHeaders) {
-                        let th = document.createElement('th');
-                        th.innerHTML = h;
-                        thRow.appendChild(th);
-                    }
-    
-                    authorTable.append(thRow);
-    
-                    // Iterate through the 'cats' and create a tr with td we want to show
-                    for (let author of r) {
-                        // Row for each cat
-                        let tr = document.createElement('tr');
-    
-                        // Author's First Name
-                        let tdName = document.createElement('td');
-                        tdName.innerHTML = author.firstName;
-                        tr.appendChild(tdName);
-                        
-                        // Author's Last Name
-                        let tdLastName = document.createElement('td');
-                        tdLastName.innerHTML = author.lastName;
-                        tr.appendChild(tdAge);
-    
-                        // Author's Bio
-                        let tdBio = document.createElement('td');
-                        tdBio.innerHTML = author.bio;
-                        tr.appendChild(tdBio);
-
-                        //Author's Points
-                        let tdPoints = document.createElement('td');
-                        tdPoints.innerHTML = author.points;
-                        tr.appendChild(tdPoints);
-    
-                        authorTable.appendChild(tr);
-                    }
-
-                    dataSection.appendChild(authorTable);
-                }
+    function receiveData(){
+        console.log("The xhttp ready state is: " + xhttp.readyState);
+        console.log("The xhttp status is: " + xhttp.status);
+        if (xhttp.readyState == 4){
+            if(xhttp.status == 200){
+                //test to see if javascript is talking
+                console.log("Request is ready and sending.");
+                //load new html page sent from servlet
+                console.log(xhttp.responseText);
+                window.location.href = xhttp.responseText;
+                console.log("Switching to newwork.html!");
             }
         }
     }
-
-    /**
-        * In the final product, this page will:
-        * 
-        * 1. Display a Welcome Message
-        * 2. Display a Story Submit Form
-        * 3. Display all Pending Stories
-        * 4. Display Stories that do not have points assigned
-        * 5. Display Info Requests from Editors
-        */
+}
