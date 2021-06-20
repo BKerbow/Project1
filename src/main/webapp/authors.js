@@ -53,7 +53,7 @@ function getStories(){
 }
 
 function getEditorMessages(){
-    window.location = "/Project1/src/main/webapp/editormessage.html";
+    window.location = "/Project1/editormessage.html";
 }
 
 function submitStory(){
