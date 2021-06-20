@@ -116,9 +116,13 @@ public class FrontControllerServlet extends HttpServlet {
 			break;
 		}
 		case "logout": {
-			System.out.println("Logging out!");
+			String pageURL = "";
+			Object loggedIn	= session.getAttribute("logged_in");
+			if(loggedIn instanceof Author) pageURL = "index.html";
+			if(loggedIn instanceof Editor) pageURL = "index.html";
+			System.out.println("Logging you out!");
+			response.getWriter().append(pageURL);
 			session.invalidate();
-			response.getWriter().append("index.html");
 			break;
 		}
 		//			case "get_story_types": {
@@ -246,6 +250,7 @@ public class FrontControllerServlet extends HttpServlet {
 				System.out.println("Failed to log in with the provided credentials: username=" + info.username + "password=" + info.password);
 			}
 		}
+		case "story_submit":
 		default: System.out.println("You suck at this programming thing, don't you?"); break;
 
 		}
