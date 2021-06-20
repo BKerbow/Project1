@@ -217,9 +217,9 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 
 	session = request.getSession();
 
-	uri = uri.substring("/Project1/controller/".length());
+	uri = uri.substring("/Project1/FrontController/*".length());
 	switch (uri) {
-	case "author_login": {
+	case "/author_login": {
 		System.out.println("I got the author login!");
 		LoginInfo info = this.gson.fromJson(request.getReader(), LoginInfo.class);
 		Author a = new AuthorRepo().getByUsernameAndPassword(info.username, info.password);

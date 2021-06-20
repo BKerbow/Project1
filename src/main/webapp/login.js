@@ -1,11 +1,11 @@
 let url = 'http://localhost:8080/Project1/FrontController';
 
-function authorLogin(source){
+function login(source){
     //Everything happening here (outside of onreadystatechange) prepares data and sends it to server
     console.log("logging in...");
     let flag;
 
-    if (source == authorLogin){
+    if (source == 'authorLogin'){
         flag = "/author_login";
     }
 
@@ -37,7 +37,7 @@ function authorLogin(source){
                 //test to see if javascript is talking
                 console.log("Request is ready and sending.");
                 //load new html page sent from servlet
-                //window.location.href = xhttp.responseText;
+                window.location.href = xhttp.responseText;
                 console.log("Switching to authors.html!");
             }
         }
