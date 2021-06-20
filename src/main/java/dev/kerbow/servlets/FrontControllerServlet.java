@@ -246,18 +246,19 @@ public class FrontControllerServlet extends HttpServlet {
 			}
 			break;
 		}
-		case "editor_login":{
-			System.out.println("I got the editor login!");
+		case "editor_login": {
+			System.out.println("I got the author login!");
 			LoginInfo info = this.gson.fromJson(request.getReader(), LoginInfo.class);
 			Editor e = new EditorRepo().getByUsernameAndPassword(info.username, info.password);
 			if (e != null) {
 				System.out.println("The Editor " + e.getFirstName() + " has logged in!");
 				session.setAttribute("logged_in", e);
 				response.getWriter().append("editors.html");
-				System.out.println("Editor logged in.");
+				System.out.println("Editor Logged In.");
 			} else {
-				System.out.println("Failed to log in with the provided credentials: username=" + info.username + "password=" + info.password);
+				System.out.println("Failed to login with provided credentials credentials: username=" + info.username + " password=" + info.password);
 			}
+			break;
 		}
 		case "logout": {
 			String pageURL = "";

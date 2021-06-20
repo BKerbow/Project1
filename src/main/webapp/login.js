@@ -45,8 +45,8 @@ function editorLogin(){
     console.log("logging in...");
 
     let editorLogIn = {
-        username: document.getElementById("editorUsername").value,
-        password: document.getElementById("editorPassword").value
+        username: document.getElementById("authorUsername").value,
+        password: document.getElementById("authorPassword").value
     };
 
     console.log("login info:" + editorLogIn);
@@ -74,7 +74,7 @@ function editorLogin(){
                 //load new html page sent from servlet
                 console.log(xhttp.responseText);
                 window.location.href = xhttp.responseText;
-                console.log("Switching to editors.html!");
+                console.log("Switching to authors.html!");
             }
         }
     }
