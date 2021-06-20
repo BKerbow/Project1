@@ -71,7 +71,7 @@ public class FrontControllerServlet extends HttpServlet {
 
 		uri = uri.substring("/Project1/controller/".length());
 		switch (uri) {
-		case "sign_up_author": {
+		case "author_signup": {
 			System.out.println("Received author sign up!");
 			Author a = this.gson.fromJson(request.getReader(), Author.class);
 			if (a != null) {
@@ -84,6 +84,18 @@ public class FrontControllerServlet extends HttpServlet {
 				System.out.println("Failed to create new Author account!");
 			}
 			break;
+		}
+		case "editor_signup": {
+			System.out.println("Received Editor Sign Up!");
+			Editor e = this.gson.fromJson(request.getReader(), Editor.class);
+			if(e != null) {
+				e = new EditorRepo().add(e);
+				System.out.println("Created the new editor " + e + "and logged in!");
+				session.setAttribute("logged_in", e);
+				response.getWriter().append("editors.html");
+			} else {
+				System.out.println("Failed to create new Editor account!");
+			}
 		}
 		// TODO: can editor login and author login be combined into the same thing? would require that login info across the two tables be unique
 		case "editor_login": {
