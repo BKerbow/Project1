@@ -52,6 +52,10 @@ function getStories(){
     }
 }
 
+function getEditorMessages(){
+    window.location = "/Project1/html/editormessage.html";
+}
+
 function logout(){
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", url + "/logout", true);
