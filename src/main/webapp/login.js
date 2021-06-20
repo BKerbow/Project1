@@ -45,8 +45,8 @@ function editorLogin(){
     console.log("logging in...");
 
     let editorLogIn = {
-        username: document.getElementById("authorUsername").value,
-        password: document.getElementById("authorPassword").value
+        username: document.getElementById("editorUsername").value,
+        password: document.getElementById("editorPassword").value
     };
 
     console.log("login info:" + editorLogIn);

@@ -247,7 +247,7 @@ public class FrontControllerServlet extends HttpServlet {
 			break;
 		}
 		case "editor_login": {
-			System.out.println("I got the author login!");
+			System.out.println("I got the Editor login!");
 			LoginInfo info = this.gson.fromJson(request.getReader(), LoginInfo.class);
 			Editor e = new EditorRepo().getByUsernameAndPassword(info.username, info.password);
 			if (e != null) {
