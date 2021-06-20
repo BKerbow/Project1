@@ -19,5 +19,5 @@ function sendInfoRequest(){
 }
 
 function rejectScript(){
-    window.location = "Project1/rejectscript.html";
+    window.location = "/Project1/rejectscript.html";
 }
