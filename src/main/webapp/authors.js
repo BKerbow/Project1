@@ -1,5 +1,26 @@
 let url = "http://localhost:8080/Project1/FrontController"
 
+function displayStories(){
+    console.log("displaying author's stories");
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url + "/get_author_stories", true);
+    xhttp.send();
+    console.log(xhttp.responseText);
+
+    let dataSection = document.getElementById('data');
+    dataSection.innerHTML = '';
+
+    xhttp.onreadystatechange = () => {
+        console.log(xhttp.readyState);
+        console.log(xhttp.status);
+        if(xhttp.readyState == 4){
+            if(xhttp.status == 200){
+                //window.location.assign('authors.html');
+            }
+        }
+    }
+}
+
 function getStories(){
     //Everything happening here (outside of onreadystatechange) prepares data and sends it to server
     console.log("clicked Story Submit Button");
@@ -26,25 +47,6 @@ function getStories(){
                 console.log(xhttp.responseText);
                 window.location.href = xhttp.responseText;
                 console.log("Switching to newwork.html!");
-            }
-        }
-    }
-}
-
-function displayStories(){
-    console.log("displaying author's stories");
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("GET", url + "/get_author_stories", true);
-    xhttp.send();
-    console.log(xhttp.responseText);
-
-    let dataSection = document.getElementById('data');
-    dataSection.innerHTML = '';
-
-    xhttp.onreadystatechange = () => {
-        if(xhttp.readyState == 4){
-            if(xhttp.status == 200){
-                window.location.assign('authors.html');
             }
         }
     }
