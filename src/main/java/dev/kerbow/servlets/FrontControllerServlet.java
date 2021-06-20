@@ -217,7 +217,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 
 	session = request.getSession();
 
-	uri = uri.substring("/Project1/FrontController/*".length());
+	uri = uri.substring("/Project1/controller/*".length());
 	switch (uri) {
 	case "/author_login": {
 		System.out.println("I got the author login!");
