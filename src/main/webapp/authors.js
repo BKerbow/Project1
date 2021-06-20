@@ -31,6 +31,25 @@ function getStories(){
     }
 }
 
+function displayStories(){
+    console.log("displaying author's stories");
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url + "/get_author_stories", true);
+    xhttp.send();
+    console.log(xhttp.responseText);
+
+    let dataSection = document.getElementById('data');
+    dataSection.innerHTML = '';
+
+    xhttp.onreadystatechange = () => {
+        if(xhttp.readyState == 4){
+            if(xhttp.status == 200){
+                window.location.assign('authors.html');
+            }
+        }
+    }
+}
+
 function logout(){
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", url + "/logout", true);
@@ -44,32 +63,5 @@ function logout(){
         console.log(xhttp.responseText);
         window.location.href = xhttp.responseText;
         console.log("Switching to login.html!");
-    }
-}
-
-function displayStories(){
-    console.log("displaying author's stories");
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("GET", url + "/get_author_stories", true);
-    xhttp.send();
-
-    let dataSection = document.getElementById('data');
-    dataSection.innerHTML = '';
-
-    xhttp.onreadystatechange = () => {
-        if(xhttp.readyState == 4){
-            if(xhttp.status == 200){
-                window.location.assign('authors.html');
-
-                $.ajax({
-                    method: "GET",
-                    url: url,
-                    success: function(response){
-                        response = xhttp.responseText;
-                        console.log(response);
-                    }
-                })
-            }
-        }
     }
 }
