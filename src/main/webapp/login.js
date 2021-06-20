@@ -74,7 +74,7 @@ function editorLogin(){
                 //load new html page sent from servlet
                 console.log(xhttp.responseText);
                 window.location.href = xhttp.responseText;
-                console.log("Switching to authors.html!");
+                console.log("Switching to editors.html!");
             }
         }
     }

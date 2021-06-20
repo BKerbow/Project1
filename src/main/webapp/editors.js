@@ -13,3 +13,11 @@ function logout(){
         console.log("Switching to login.html!");
     }
 }
+
+function sendInfoRequest(){
+    window.location = "/Project1/inforequest.html";
+}
+
+function rejectScript(){
+    window.location = "Project1/rejectscript.html";
+}
