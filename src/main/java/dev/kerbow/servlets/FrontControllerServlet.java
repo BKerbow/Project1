@@ -127,16 +127,6 @@ public class FrontControllerServlet extends HttpServlet {
 			}
 			break;
 		}
-		case "logout": {
-			String pageURL = "";
-			Object loggedIn	= session.getAttribute("logged_in");
-			if(loggedIn instanceof Author) pageURL = "index.html";
-			if(loggedIn instanceof Editor) pageURL = "index.html";
-			System.out.println("Logging you out!");
-			response.getWriter().append(pageURL);
-			session.invalidate();
-			break;
-		}
 		case "get_story_types": {
 			List<StoryType> types = new ArrayList<StoryType>(new StoryTypeRepo().getAll().values());
 			List<Genre> genres = new ArrayList<Genre>(new GenreRepo().getAll().values());
@@ -146,6 +136,13 @@ public class FrontControllerServlet extends HttpServlet {
 			response.getWriter().append(json);
 			break;
 		}
+		case "get_author_stories":
+			List<Story> stories = new ArrayList<Story>(new StoryRepo().getAll().values());
+			Author a = (Author) session.getAttribute("logged_in");
+			String[] jsons = new String[] { this.gson.toJson(stories), this.gson.toJson(a)};
+			json = gson.toJson(jsons);
+			response.getWriter().append(json);
+			break;
 		//			case "submit_story_form": {
 		//				Story story = this.gson.fromJson(request.getReader(), Story.class);
 		//				Author a = (Author) session.getAttribute("logged_in");
@@ -212,7 +209,7 @@ public class FrontControllerServlet extends HttpServlet {
 		//			case "request_info": {
 		//				break;
 		//			}
-		default: break;
+		default: System.out.println("Sorry, I didn't catch that GET flag."); break;
 		}
 	}
 
@@ -262,8 +259,18 @@ public class FrontControllerServlet extends HttpServlet {
 				System.out.println("Failed to log in with the provided credentials: username=" + info.username + "password=" + info.password);
 			}
 		}
+		case "logout": {
+			String pageURL = "";
+			Object loggedIn	= session.getAttribute("logged_in");
+			if(loggedIn instanceof Author) pageURL = "index.html";
+			if(loggedIn instanceof Editor) pageURL = "index.html";
+			System.out.println("Logging you out!");
+			response.getWriter().append(pageURL);
+			session.invalidate();
+			break;
+		}
 		case "story_submit":
-		default: System.out.println("You suck at this programming thing, don't you?"); break;
+		default: System.out.println("Sorry, I didn't get that POST flag."); break;
 
 		}
 	}

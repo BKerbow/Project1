@@ -50,7 +50,7 @@ function logout(){
 function displayStories(){
     console.log("displaying author's stories");
     let xhttp = new XMLHttpRequest();
-    xhttp.open("GET", url + "get_author_stories", true);
+    xhttp.open("GET", url + "/get_author_stories", true);
     xhttp.send();
 
     let dataSection = document.getElementById('data');
