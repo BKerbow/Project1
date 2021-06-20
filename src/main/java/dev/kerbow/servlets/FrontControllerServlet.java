@@ -137,15 +137,15 @@ public class FrontControllerServlet extends HttpServlet {
 			session.invalidate();
 			break;
 		}
-		//			case "get_story_types": {
-		//				List<StoryType> types = new ArrayList<StoryType>(new StoryTypeRepo().getAll().values());
-		//				List<Genre> genres = new ArrayList<Genre>(new GenreRepo().getAll().values());
-		//				Author a = (Author) session.getAttribute("logged_in");
-		//				String[] jsons = new String[] { this.gson.toJson(types), this.gson.toJson(genres), this.gson.toJson(a) };
-		//				json = gson.toJson(jsons);
-		//				response.getWriter().append(json);
-		//				break;
-		//			}
+		case "get_story_types": {
+			List<StoryType> types = new ArrayList<StoryType>(new StoryTypeRepo().getAll().values());
+			List<Genre> genres = new ArrayList<Genre>(new GenreRepo().getAll().values());
+			Author a = (Author) session.getAttribute("logged_in");
+			String[] jsons = new String[] { this.gson.toJson(types), this.gson.toJson(genres), this.gson.toJson(a) };
+			json = gson.toJson(jsons);
+			response.getWriter().append(json);
+			break;
+		}
 		//			case "submit_story_form": {
 		//				Story story = this.gson.fromJson(request.getReader(), Story.class);
 		//				Author a = (Author) session.getAttribute("logged_in");
@@ -155,20 +155,20 @@ public class FrontControllerServlet extends HttpServlet {
 		//				System.out.println(story);
 		//				break;
 		//			}
-		case "get_author_stories": {
-			Author a = (Author) session.getAttribute("logged_in");
-			if (a == null) System.out.println("author null!");
-			Set<Genre> genres = Utils.getGenres(a);
-			List<Story> stories = new ArrayList<Story>();
-				
-			for (Genre g : genres) stories.addAll(new StoryRepo().getAllByGenre(g));
-			
-			json = this.gson.toJson(stories);
-			
-		//	String[] jsons = new String[] { this.gson.toJson(stories), "" };
-			response.getWriter().append(json);
-			break;
-		}
+//		case "get_author_stories": {
+//			Author a = (Author) session.getAttribute("logged_in");
+//			if (a == null) System.out.println("author null!");
+//			Set<Genre> genres = Utils.getGenres(a);
+//			List<Story> stories = new ArrayList<Story>();
+//				
+//			for (Genre g : genres) stories.addAll(new StoryRepo().getAllByGenre(g));
+//			
+//			json = this.gson.toJson(stories);
+//			
+//		//	String[] jsons = new String[] { this.gson.toJson(stories), "" };
+//			response.getWriter().append(json);
+//			break;
+//		}
 		//			case "save_story_to_session": {
 		//				JsonElement root = JsonParser.parseReader(request.getReader());
 		//				session.setAttribute("story", root.getAsJsonObject());
