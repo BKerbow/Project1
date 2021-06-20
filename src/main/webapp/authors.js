@@ -57,7 +57,7 @@ function getEditorMessages(){
 }
 
 function submitStory(){
-    window.location = "/Project1/src/main/webapp/newwork.html";
+    window.location = "/Project1/newwork.html";
 }
 
 function logout(){
