@@ -16,6 +16,7 @@ function displayStories(){
         if(xhttp.readyState == 4){
             if(xhttp.status == 200){
                 //window.location.assign('authors.html');
+                console.log(xhttp.responseText);
             }
         }
     }
