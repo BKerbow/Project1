@@ -57,7 +57,7 @@ function displayStories(){
                 //Story Type
                 let tdStoryType = document.createElement('td');
                 tdStoryType = story.type;
-                tr.appendChild(tdStory);
+                tr.appendChild(tdStoryType);
 
                 //Description
                 let tdDescription = document.createElement('td');
