@@ -136,7 +136,7 @@ public class FrontControllerServlet extends HttpServlet {
 			response.getWriter().append(json);
 			break;
 		}
-		case "get_author_stories":
+		case "/get_author_stories":
 			List<Story> stories = new ArrayList<Story>(new StoryRepo().getAll().values());
 			Author a = (Author) session.getAttribute("logged_in");
 			String[] jsons = new String[] { this.gson.toJson(stories), this.gson.toJson(a)};
