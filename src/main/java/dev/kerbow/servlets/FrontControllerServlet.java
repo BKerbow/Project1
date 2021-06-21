@@ -35,6 +35,7 @@ public class FrontControllerServlet extends HttpServlet {
 		public String username;
 		public String password;
 	}
+	
 
 	//	class StoryInfo {
 	//		public String title;
@@ -51,6 +52,7 @@ public class FrontControllerServlet extends HttpServlet {
 
 	private Gson gson = new Gson();
 	public static HttpSession session;
+	
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -136,8 +138,12 @@ public class FrontControllerServlet extends HttpServlet {
 			response.getWriter().append(json);
 			break;
 		}
-		case "/get_author_stories":
+		case "get_author_stories":
+			System.out.println("get author stories");
 			List<Story> stories = new ArrayList<Story>(new StoryRepo().getAll().values());
+			for (Story s : stories){
+				System.out.println(s);
+			}
 			Author a = (Author) session.getAttribute("logged_in");
 			String[] jsons = new String[] { this.gson.toJson(stories), this.gson.toJson(a)};
 			json = gson.toJson(jsons);
