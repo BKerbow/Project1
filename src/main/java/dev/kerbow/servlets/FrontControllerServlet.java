@@ -71,7 +71,7 @@ public class FrontControllerServlet extends HttpServlet {
 
 		session = request.getSession();
 
-		uri = uri.substring("/Project1/controller/".length());
+		uri = uri.substring("/Project1/FrontController/".length());
 		switch (uri) {
 		case "author_signup": {
 			System.out.println("Received author sign up!");
@@ -141,9 +141,6 @@ public class FrontControllerServlet extends HttpServlet {
 		case "get_author_stories":
 			System.out.println("get author stories");
 			List<Story> stories = new ArrayList<Story>(new StoryRepo().getAll().values());
-			for (Story s : stories){
-				System.out.println(s);
-			}
 			Author a = (Author) session.getAttribute("logged_in");
 			String[] jsons = new String[] { this.gson.toJson(stories), this.gson.toJson(a)};
 			json = gson.toJson(jsons);

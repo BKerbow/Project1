@@ -1,4 +1,4 @@
-let url = "http://localhost:8080/Project1/controller"
+let url = "http://localhost:8080/Project1/FrontController"
 
 function displayStories(){
     console.log("displaying author's stories");
