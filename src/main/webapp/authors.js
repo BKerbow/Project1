@@ -32,7 +32,8 @@ function displayStories(){
                 let thRow = document.createElement('tr');
                 let tHeaders = ['Title', 'Genre', 'Story Type', 'Description',
                                 'Tag Line', 'Completion Date', 'Approval Status', 'Reason'];
-                for (let th of tHeaders){
+                for (let h of tHeaders){
+                    let th = document.createElement('th');
                     th.innerHTML = h;
                     thRow.appendChild(th);
                 }
