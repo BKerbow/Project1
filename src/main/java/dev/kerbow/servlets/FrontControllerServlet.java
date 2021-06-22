@@ -138,80 +138,20 @@ public class FrontControllerServlet extends HttpServlet {
 			response.getWriter().append(json);
 			break;
 		}
-		case "get_author_stories":
-			System.out.println("get author stories");
+		case "get_author_stories":{
+			System.out.println("grabbing author stories");
 			List<Story> stories = new ArrayList<Story>(new StoryRepo().getAll().values());
 			Author a = (Author) session.getAttribute("logged_in");
 			String[] jsons = new String[] { this.gson.toJson(stories), this.gson.toJson(a)};
 			json = gson.toJson(jsons);
 			response.getWriter().append(json);
+			System.out.print(jsons[0] + " " + jsons[1]);
 			break;
-		//			case "submit_story_form": {
-		//				Story story = this.gson.fromJson(request.getReader(), Story.class);
-		//				Author a = (Author) session.getAttribute("logged_in");
-		//				story.setApprovalStatus("submitted");
-		//				story.setAuthor(a);
-		//				story = new StoryRepo().add(story);
-		//				System.out.println(story);
-		//				break;
-		//			}
-//		case "get_author_stories": {
-//			Author a = (Author) session.getAttribute("logged_in");
-//			if (a == null) System.out.println("author null!");
-//			Set<Genre> genres = Utils.getGenres(a);
-//			List<Story> stories = new ArrayList<Story>();
-//				
-//			for (Genre g : genres) stories.addAll(new StoryRepo().getAllByGenre(g));
-//			
-//			json = this.gson.toJson(stories);
-//			
-//		//	String[] jsons = new String[] { this.gson.toJson(stories), "" };
-//			response.getWriter().append(json);
-//			break;
+		}
+//		case "get_editor's_messages":{
+//			System.out.println("grabbing editor messages");
+//			List<Messages> editorMessage = new ArrayList<Messages>(new MessageRepo().getAll().values());
 //		}
-		//			case "save_story_to_session": {
-		//				JsonElement root = JsonParser.parseReader(request.getReader());
-		//				session.setAttribute("story", root.getAsJsonObject());
-		//				response.getWriter().append("saved");
-		//				break;
-		//			}
-		//			case "get_story_from_session": {
-		//				JsonObject sj = (JsonObject) session.getAttribute("story");
-		//				System.out.println(sj);
-		//				response.getWriter().append(sj.toString());
-		//				break;
-		//			}
-		//			case "approve_story": {
-		//				Story s = this.gson.fromJson(request.getReader(), Story.class);
-		//				String status = s.getApprovalStatus();
-		//				switch (status) {
-		//					case "submitted":
-		//						s.setApprovalStatus("approved_assistant");
-		//						break;
-		//					case "approved_assistant":
-		//						s.setApprovalStatus("approved_editor");
-		//						break;
-		//					case "approved_editor":
-		//						s.setApprovalStatus("approved_senior");
-		//						break;
-		//					case "approved_senior":
-		//						s.setApprovalStatus("waiting_for_draft");
-		//						break;
-		//					case "waiting_for_draft":
-		//						s.setApprovalStatus("draft_approved");
-		//						break;
-		//					default: break;
-		//				}
-		//				
-		//				
-		//				break;
-		//			}
-		//			case "deny_story": {
-		//				break;
-		//			}
-		//			case "request_info": {
-		//				break;
-		//			}
 		default: System.out.println("Sorry, I didn't catch that GET flag."); break;
 		}
 	}

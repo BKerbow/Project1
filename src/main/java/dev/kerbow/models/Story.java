@@ -14,16 +14,7 @@ import dev.kerbow.repositories.StoryTypeRepo;
 
 public class Story {
 	//Why is this enum here? What's it for?
-	public enum StatusLevel {
-		SUBMITTED,
-		ASSISTANT_APPROVED,
-		ASSISTANT_URGENT,
-		EDITOR_APPROVED,
-		EDITOR_URGENT,
-		SENIOR_APPROVED,
-		SENIOR_URGENT,
-		DRAFT_APPROVED
-	}
+	
 	private Integer id;
 	private String title;
 	private Genre genre;
@@ -37,34 +28,6 @@ public class Story {
 	private String reason;
 	
 	public Story() {}
-	
-	public static String getStatusString(StatusLevel level) {
-		switch (level) {
-			case SUBMITTED: return "submitted";
-			case ASSISTANT_APPROVED: return "assistant_approved";
-			case ASSISTANT_URGENT: return "assistant_urgent";
-			case EDITOR_APPROVED: return "editor_approved";
-			case EDITOR_URGENT: return "editor_urgent";
-			case SENIOR_APPROVED: return "senior_approved";
-			case SENIOR_URGENT: return "senior_urgent";
-			case DRAFT_APPROVED: return "draft_approved";
-			default: return null;
-		}
-	}
-	
-	public static StatusLevel getStatusLevel(String level) {
-		switch (level.toLowerCase()) {
-			case "submitted": return StatusLevel.SUBMITTED;
-			case "assistant_approved": return StatusLevel.ASSISTANT_APPROVED;
-			case "assistant_urgent": return StatusLevel.ASSISTANT_URGENT;
-			case "editor_approved": return StatusLevel.EDITOR_APPROVED;
-			case "editor_urgent": return StatusLevel.EDITOR_URGENT;
-			case "senior_approved": return StatusLevel.SENIOR_APPROVED;
-			case "senior_urgent": return StatusLevel.SENIOR_URGENT;
-			case "draft_approved": return StatusLevel.DRAFT_APPROVED;
-			default: return null;
-		}
-	}
 
 	public Integer getId() {
 		return id;
