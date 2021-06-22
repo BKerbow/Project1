@@ -146,10 +146,11 @@ public class StoryRepo implements GenericRepo<Story> {
 		Author a = (new AuthorRepo()).getById(rs.getInt("author"));
 		s.setAuthor(a);
 		s.setDescription(rs.getString("description"));
-		s.setTagLine(rs.getString("tag_line"));
-		s.setCompletionDate(rs.getDate("completion_date"));
-		s.setApprovalStatus(rs.getString("approval_status"));
+		s.setTagLine(rs.getString("tag_Line"));
+		s.setCompletionDate(rs.getDate("completion_Date"));
+		s.setApprovalStatus(rs.getString("approval_Status"));
 		s.setReason(rs.getString("reason"));
+		s.setCompletionStatus(rs.getString("completion_Status"));
 		
 		return s;
 	}

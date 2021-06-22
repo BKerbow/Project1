@@ -65,11 +65,10 @@ public class MessagesRepo implements GenericRepo<Messages> {
 	
 	public Messages getEditorMessage(String fromEditor) {
 		
-		String sql = "select s.title, e.first_name, m.editorMessage, a.username "
-				+ "from messages m left join stories s on m.id = s.id "
+		String sql = "select s.title, e.first_name, m.editorMessage from messages m " 
+				+ " left join stories s on m.id = s.id "
 				+ "left join editors e on m.id = e.id "
-				+ "left join authors a on m.id = a.id "
-				+ "where a.username = ?;";
+				+ "where a.id = ? and s.id = ?;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, fromEditor);
@@ -85,7 +84,7 @@ public class MessagesRepo implements GenericRepo<Messages> {
 	
 	public Messages getByAuthorName(String fromAuthor) {
 		
-		String sql = "select * from messages where id = ? and fromAuthor = ?;";
+		String sql = "select s.title, a.first_name, m.authorMessage";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, fromAuthor);

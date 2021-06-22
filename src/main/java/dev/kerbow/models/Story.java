@@ -22,9 +22,10 @@ public class Story {
 	private String description;
 	private String tagLine;
 	private Date completionDate;
-	private Date submissionDate;
+	private String completionStatus;
 	private String approvalStatus;
 	private String reason;
+	private Date submissionDate;
 	
 	public Story() {}
 
@@ -115,6 +116,15 @@ public class Story {
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
+	
+
+	public String getCompletionStatus() {
+		return completionStatus;
+	}
+
+	public void setCompletionStatus(String completionStatus) {
+		this.completionStatus = completionStatus;
+	}
 
 	@Override
 	public int hashCode() {
@@ -123,6 +133,7 @@ public class Story {
 		result = prime * result + ((approvalStatus == null) ? 0 : approvalStatus.hashCode());
 		result = prime * result + ((author == null) ? 0 : author.hashCode());
 		result = prime * result + ((completionDate == null) ? 0 : completionDate.hashCode());
+		result = prime * result + ((completionStatus == null) ? 0 : completionStatus.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((genre == null) ? 0 : genre.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -157,6 +168,11 @@ public class Story {
 			if (other.completionDate != null)
 				return false;
 		} else if (!completionDate.equals(other.completionDate))
+			return false;
+		if (completionStatus == null) {
+			if (other.completionStatus != null)
+				return false;
+		} else if (!completionStatus.equals(other.completionStatus))
 			return false;
 		if (description == null) {
 			if (other.description != null)
@@ -205,8 +221,8 @@ public class Story {
 	public String toString() {
 		return "Story [id=" + id + ", title=" + title + ", genre=" + genre + ", type=" + type + ", author=" + author
 				+ ", description=" + description + ", tagLine=" + tagLine + ", completionDate=" + completionDate
-				+ ", submissionDate=" + submissionDate + ", approvalStatus=" + approvalStatus + ", reason=" + reason
-				+ "]";
+				+ ", completionStatus=" + completionStatus + ", approvalStatus=" + approvalStatus + ", reason=" + reason
+				+ ", submissionDate=" + submissionDate + "]";
 	}
 	
 	public static class Deserializer implements JsonDeserializer<Story> {
@@ -236,9 +252,10 @@ public class Story {
 			String storyType = context.deserialize(jo.get("storyType"), String.class);
 			story.setType(new StoryTypeRepo().getByName(storyType));
 			story.setDescription(context.deserialize(jo.get("description"), String.class));
-			story.setTagLine(context.deserialize(jo.get("tagline"), String.class));
+			story.setTagLine(context.deserialize(jo.get("tagLine"), String.class));
 			story.setCompletionDate(context.deserialize(jo.get("date"), Date.class));
-			story.setSubmissionDate(context.deserialize(jo.get("submission_date"), Date.class));
+			story.setCompletionStatus(context.deserialize(jo.get("completionStatus"), String.class));
+			story.setSubmissionDate(context.deserialize(jo.get("submissionDate"), Date.class));
 			System.out.println("printing out story: " + story);
 			System.out.println(jo);
 			return story;

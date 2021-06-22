@@ -147,7 +147,6 @@ public class FrontControllerServlet extends HttpServlet {
 			Author a = (Author) session.getAttribute("logged_in");
 			String[] jsons = new String[] { this.gson.toJson(stories), this.gson.toJson(a)};
 			json = this.gson.toJson(a) + "|" + this.gson.toJson(stories);
-			//json = gson.toJson(jsons);
 			response.getWriter().append(json);
 			System.out.print(jsons[0] + " " + jsons[1]);
 			break;
@@ -155,9 +154,18 @@ public class FrontControllerServlet extends HttpServlet {
 		case "get_editor_messages":{
 			System.out.println("grabbing editor messages");
 			List<Messages> messages = new ArrayList<Messages>(new MessagesRepo().getAll().values());
-			String mjson = new String(this.gson.toJson(messages));
-			json = gson.toJson(mjson);
-			response.getWriter().append(mjson);
+			Author a = (Author) session.getAttribute("logged_in");
+			String[] mjson = new String[] { this.gson.toJson(messages), this.gson.toJson(a)};
+			json = gson.toJson(a) + "|" + this.gson.toJson(messages);
+			response.getWriter().append(json);
+			break;
+		}
+		case "get_author_messages":{
+			System.out.println("grabbing author messages");
+			List<Messages> messages = new ArrayList<Messages>(new MessagesRepo().getAll().values());
+			String amjson = new String(this.gson.toJson(messages));
+			json = gson.toJson(amjson);
+			response.getWriter().append(amjson);
 			break;
 		}
 		default: System.out.println("Sorry, I didn't catch that GET flag."); break;
@@ -233,6 +241,16 @@ public class FrontControllerServlet extends HttpServlet {
 			s.setAuthor(a);
 			s = new StoryRepo().add(s);
 			System.out.println("Added the story to the database!");
+			response.getWriter().append("authors.html");
+			break;
+		}
+		case "submit_draft_update":{
+			System.out.println("I got the new version!");
+			Story s = gson.fromJson(request.getReader(), Story.class);
+			Author a = (Author) session.getAttribute("logged_in");
+			s.setAuthor(a);
+			//fix this!!
+			//s = new StoryRepo().update(s);
 			response.getWriter().append("authors.html");
 			break;
 		}

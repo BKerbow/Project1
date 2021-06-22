@@ -6,7 +6,9 @@ function submit(){
         genre: document.getElementById("genre").value,
         storyType: document.getElementById("story_type").value,
         description: document.getElementById("description").value,
-        tagLine: document.getElementById("tag_line")
+        tagLine: document.getElementById("tag_line").value,
+        completionStatus: document.getElementById("completion_status").value,
+        submissionDate: document.getElementById("submission_date").value
     };
 
     console.log("new story info: " + authorSubmit);
