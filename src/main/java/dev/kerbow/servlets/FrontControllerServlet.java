@@ -219,7 +219,13 @@ public class FrontControllerServlet extends HttpServlet {
 			session.invalidate();
 			break;
 		}
-		case "story_submit":
+		case "submit_new_work":{
+			System.out.println("I got the new work!");
+			Story s = new StoryRepo().add(s);
+			System.out.println("Added the story to the database!");
+			response.getWriter().append("authors.html");
+			break;
+		}
 		default: System.out.println("Sorry, I didn't get that POST flag."); break;
 
 		}
