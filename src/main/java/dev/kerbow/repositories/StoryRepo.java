@@ -14,7 +14,8 @@ import dev.kerbow.models.StoryType;
 import dev.kerbow.utils.JDBCConnection;
 
 public class StoryRepo implements GenericRepo<Story> {
-private Connection conn = JDBCConnection.getConnection();
+	
+	private Connection conn = JDBCConnection.getConnection();
 	
 	@Override
 	public Story add(Story s) {

@@ -7,7 +7,7 @@ function displayStories(){
     xhttp.send();
     console.log(xhttp.responseText);
 
-    let dataSection = document.getElementById('data');
+    let dataSection = document.getElementById('storydata');
     dataSection.innerHTML = '';
 
     xhttp.onreadystatechange = () => {
@@ -18,11 +18,13 @@ function displayStories(){
                 
                 console.log(xhttp.responseText);
 
-                let dataSection = document.getElementById('data');
+                let dataSection = document.getElementById('storyData');
                 dataSection.innerHTML = '';
 
                 let r = xhttp.responseText;
                 r = JSON.parse(r);
+                let story = JSON.parse(r[0]);
+                let author = JSON.parse(r[1]);
 
                 //create table
                 let authorTable = document.createElement('table');
@@ -41,7 +43,7 @@ function displayStories(){
                 authorTable.append(thRow);
 
                 //Iterate through the stories and create a table row with the date we want
-                for (let story of r){
+                for (story of r){
                 let tr = document.createElement('tr');
 
                 //Title
@@ -131,7 +133,7 @@ function getEditorMessages(){
     xhttp.send();
     console.log(xhttp.responseText);
 
-    let dataSection = document.getElementById('data');
+    let dataSection = document.getElementById('editorMessageData');
     dataSection.innerHTML = '';
 
     xhttp.onreadystatechange = () => {
@@ -142,79 +144,51 @@ function getEditorMessages(){
                 
                 console.log(xhttp.responseText);
 
-                let dataSection = document.getElementById('data');
+                let dataSection = document.getElementById('editorMessageData');
                 dataSection.innerHTML = '';
 
                 let r = xhttp.responseText;
                 r = JSON.parse(r);
-                let story = JSON.parse(r[0]);
-                let author = JSON.parse(r[1]);
 
                 console.log(story);
                 //create table
-                let authorTable = document.createElement('table');
-                authorTable.id = 'authorTable';
+                let messageTable = document.createElement('table');
+                messageTable.id = 'messageTable';
 
                 //create table header row
                 let thRow = document.createElement('tr');
-                let tHeaders = ['Title', 'Genre', 'Story Type', 'Description',
-                                'Tag Line', 'Completion Date', 'Approval Status', 'Reason'];
+                let tHeaders = ['Title', 'From Editor', 'Editor Message'];
                 for (let h of tHeaders){
                     let th = document.createElement('th');
                     th.innerHTML = h;
                     thRow.appendChild(th);
                 }
 
-                authorTable.append(thRow);
+                messageTable.append(thRow);
 
                 //Iterate through the stories and create a table row with the date we want
                 for (story of r){
                 let tr = document.createElement('tr');
 
-                //Title
+                //Title of Work
                 let tdTitle = document.createElement('td');
-                tdTitle.innerHTML = story.title;
+                tdTitle.innerHTML = messages.title;
                 tr.appendChild(tdTitle);
 
-                //Genre
-                let tdGenre = document.createElement('td');
-                tdGenre.innerHTML = story.genre;
-                tr.appendChild(tdGenre);
+                //Editor's Name
+                let tdEditor = document.createElement('td');
+                tdEditor.innerHTML = messages.fromEditor;
+                tr.appendChild(tdEditir);
 
-                //Story Type
-                let tdStoryType = document.createElement('td');
-                tdStoryType.innerHTML = story.type;
-                tr.appendChild(tdStoryType);
+                //Editor's Message
+                let tdEditorMessage = document.createElement('td');
+                tdEditorMessage.innerHTML = messages.editorMessage;
+                tr.appendChild(tdEditorMessage);
 
-                //Description
-                let tdDescription = document.createElement('td');
-                tdDescription.innerHTML = story.description;
-                tr.appendChild(tdDescription);
-
-                //Tag Line
-                let tdTagLine = document.createElement('td');
-                tdTagLine.innerHTML = story.tagLine;
-                tr.appendChild(tdTagLine);
-
-                //Completion Date
-                let tdCompletionDate = document.createElement('td');
-                tdCompletionDate.innerHTML = story.completionDate;
-                tr.appendChild(tdCompletionDate);
-                
-                //Approval Status
-                let tdApprovalStatus = document.createElement('td');
-                tdApprovalStatus.innerHTML = story.approvalStatus;
-                tr.appendChild(tdApprovalStatus);
-
-                //Reason
-                let tdReason = document.createElement('td');
-                tdReason.innerHTML = story.reason;
-                tr.appendChild(tdReason);
-
-                authorTable.appendChild(tr);
+                messageTable.appendChild(tr);
                 }
                 
-                dataSection.appendChild(authorTable);
+                dataSection.appendChild(messageTable);
             }
         }
     }

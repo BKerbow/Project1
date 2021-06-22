@@ -13,7 +13,6 @@ import dev.kerbow.repositories.GenreRepo;
 import dev.kerbow.repositories.StoryTypeRepo;
 
 public class Story {
-	//Why is this enum here? What's it for?
 	
 	private Integer id;
 	private String title;

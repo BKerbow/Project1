@@ -20,12 +20,14 @@ import com.google.gson.JsonParser;
 import dev.kerbow.models.Author;
 import dev.kerbow.models.Editor;
 import dev.kerbow.models.Genre;
+import dev.kerbow.models.Messages;
 import dev.kerbow.models.Story;
 import dev.kerbow.models.StoryType;
 
 import dev.kerbow.repositories.AuthorRepo;
 import dev.kerbow.repositories.EditorRepo;
 import dev.kerbow.repositories.GenreRepo;
+import dev.kerbow.repositories.MessagesRepo;
 import dev.kerbow.repositories.StoryRepo;
 import dev.kerbow.repositories.StoryTypeRepo;
 import dev.kerbow.utils.Utils;
@@ -148,10 +150,14 @@ public class FrontControllerServlet extends HttpServlet {
 			System.out.print(jsons[0] + " " + jsons[1]);
 			break;
 		}
-//		case "get_editor's_messages":{
-//			System.out.println("grabbing editor messages");
-//			List<Messages> editorMessage = new ArrayList<Messages>(new MessageRepo().getAll().values());
-//		}
+		case "get_editor_messages":{
+			System.out.println("grabbing editor messages");
+			List<Messages> messages = new ArrayList<Messages>(new MessagesRepo().getAll().values());
+			String mjson = new String(this.gson.toJson(messages));
+			json = gson.toJson(mjson);
+			response.getWriter().append(mjson);
+			break;
+		}
 		default: System.out.println("Sorry, I didn't catch that GET flag."); break;
 		}
 	}
