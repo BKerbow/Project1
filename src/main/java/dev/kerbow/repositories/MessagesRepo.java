@@ -25,7 +25,7 @@ public class MessagesRepo implements GenericRepo<Messages> {
 		try {
 
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, m.getTitle());
+			ps.setInt(1, m.getTitle().getId());
 			ps.setInt(2, m.getFromEditor().getId());
 			ps.setInt(3, m.getFromAuthor().getId());
 			ps.setString(4, m.getEditorMessage());
@@ -61,6 +61,26 @@ public class MessagesRepo implements GenericRepo<Messages> {
 		}
 
 		return null;
+	}
+	
+	public Messages getEditorMessage(String fromEditor) {
+		
+		String sql = "select s.title, e.first_name, m.editorMessage, a.username "
+				+ "from messages m left join stories s on m.id = s.id "
+				+ "left join editors e on m.id = e.id "
+				+ "left join authors a on m.id = a.id "
+				+ "where a.username = ?;";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, fromEditor);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) this.make(rs);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
 	}
 	
 	public Messages getByAuthorName(String fromAuthor) {
@@ -110,7 +130,7 @@ public class MessagesRepo implements GenericRepo<Messages> {
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, m.getTitle());
+			ps.setInt(1, m.getTitle().getId());
 			ps.setInt(2, m.getFromEditor().getId());
 			ps.setInt(3, m.getFromAuthor().getId());
 			ps.setString(4, m.getEditorMessage());
@@ -150,16 +170,13 @@ public class MessagesRepo implements GenericRepo<Messages> {
 		Messages m = new Messages();
 		m.setId(rs.getInt("id"));
 		//gotta fix the next two lines to get the right title
-		Story s = (new StoryRepo().getById(rs.getString("title")));
+		Story s = (new StoryRepo().getById(rs.getInt("id")));
 		m.setTitle(s);
 		Editor e = (new EditorRepo()).getById(rs.getInt("editor"));
 		m.setFromEditor(e);
 		StoryType st = (new StoryTypeRepo()).getById(rs.getInt("story_type"));
-		s.setType(st);
 		m.setEditorMessage(rs.getString("editorMessage"));
 		m.setAuthorMessage(rs.getString("authorMessage"));
-		s.setDescription(rs.getString("description"));
-		s.setTagLine(rs.getString("tag_line"));
 
 		return m;
 	}

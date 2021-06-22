@@ -7,7 +7,7 @@ function displayStories(){
     xhttp.send();
     console.log(xhttp.responseText);
 
-    let dataSection = document.getElementById('storydata');
+    let dataSection = document.getElementById('storyData');
     dataSection.innerHTML = '';
 
     xhttp.onreadystatechange = () => {

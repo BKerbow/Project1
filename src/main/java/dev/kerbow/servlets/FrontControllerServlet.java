@@ -221,7 +221,8 @@ public class FrontControllerServlet extends HttpServlet {
 		}
 		case "submit_new_work":{
 			System.out.println("I got the new work!");
-			Story s = new StoryRepo().add(s);
+			Story s = gson.fromJson(request.getReader(), Story.class);
+			s = new StoryRepo().add(s);
 			System.out.println("Added the story to the database!");
 			response.getWriter().append("authors.html");
 			break;

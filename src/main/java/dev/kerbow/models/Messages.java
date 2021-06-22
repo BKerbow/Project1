@@ -10,7 +10,7 @@ import com.google.gson.JsonParseException;
 
 public class Messages {
 	private Integer id;
-	private String title;
+	private Story title;
 	private Editor fromEditor;
 	private Author fromAuthor;
 	private String editorMessage;
@@ -18,7 +18,7 @@ public class Messages {
 	
 	public Messages() {}
 	
-	public Messages(String title, Editor editor, Author author) {
+	public Messages(Story title, Editor editor, Author author) {
 		this.title = title;
 		this.fromEditor = editor;
 		this.fromAuthor = author;
@@ -33,12 +33,12 @@ public class Messages {
 		this.id = id;
 	}
 
-	public String getTitle() {
+	public Story getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setTitle(Story s) {
+		this.title = s;
 	}
 
 	public Editor getFromEditor() {
