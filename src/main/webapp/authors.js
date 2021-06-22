@@ -150,6 +150,7 @@ function getEditorMessages(){
                 let story = JSON.parse(r[0]);
                 let author = JSON.parse(r[1]);
 
+                console.log(story);
                 //create table
                 let authorTable = document.createElement('table');
                 authorTable.id = 'authorTable';
