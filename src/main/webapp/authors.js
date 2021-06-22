@@ -83,8 +83,11 @@ function displayStories(){
                 let tdReason = document.createElement('td');
                 tdReason = story.reason;
                 tr.appendChild(reason);
+
+                authorTable.appendChild(tr);
                 }
                 
+                dataSection.appendChild(authorTable);
             }
         }
     }
