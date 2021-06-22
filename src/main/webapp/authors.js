@@ -147,7 +147,7 @@ function getEditorMessages(){
 
                 let r = xhttp.responseText;
                 r = JSON.parse(r);
-                let stories = JSON.parse(r[0]);
+                let story = JSON.parse(r[0]);
                 let author = JSON.parse(r[1]);
 
                 //create table
@@ -167,7 +167,7 @@ function getEditorMessages(){
                 authorTable.append(thRow);
 
                 //Iterate through the stories and create a table row with the date we want
-                for (let story of r){
+                for (story of r){
                 let tr = document.createElement('tr');
 
                 //Title
