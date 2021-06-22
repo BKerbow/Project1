@@ -18,6 +18,8 @@ function submit(){
     xhttp.open("POST", url + "/submit_new_work", true);
     xhttp.send(json);
 
+    console.log(json);
+
     xhttp.onreadystatechange = receiveData;
 
     function receiveData(){

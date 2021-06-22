@@ -100,6 +100,7 @@ public class FrontControllerServlet extends HttpServlet {
 			} else {
 				System.out.println("Failed to create new Editor account!");
 			}
+			break;
 		}
 		// TODO: can editor login and author login be combined into the same thing? would require that login info across the two tables be unique
 		case "editor_login": {
@@ -145,7 +146,8 @@ public class FrontControllerServlet extends HttpServlet {
 			List<Story> stories = new ArrayList<Story>(new StoryRepo().getAll().values());
 			Author a = (Author) session.getAttribute("logged_in");
 			String[] jsons = new String[] { this.gson.toJson(stories), this.gson.toJson(a)};
-			json = gson.toJson(jsons);
+			json = this.gson.toJson(a) + "|" + this.gson.toJson(stories);
+			//json = gson.toJson(jsons);
 			response.getWriter().append(json);
 			System.out.print(jsons[0] + " " + jsons[1]);
 			break;
@@ -222,6 +224,13 @@ public class FrontControllerServlet extends HttpServlet {
 		case "submit_new_work":{
 			System.out.println("I got the new work!");
 			Story s = gson.fromJson(request.getReader(), Story.class);
+			if (session.getAttribute("logged_in") instanceof Author) {
+				System.out.println("author");
+			} else {
+				System.out.println("editor");
+			}
+			Author a = (Author) session.getAttribute("logged_in");
+			s.setAuthor(a);
 			s = new StoryRepo().add(s);
 			System.out.println("Added the story to the database!");
 			response.getWriter().append("authors.html");

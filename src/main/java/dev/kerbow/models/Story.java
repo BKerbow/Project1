@@ -230,15 +230,17 @@ public class Story {
 			}
 			story.setTitle(context.deserialize(jo.get("title"), String.class));
 			// TODO: move this to GenreServices!!!
-//			GenreRepo gr = new GenreRepo();
-			story.setGenre(context.deserialize(jo.get("genre"), Genre.class));
-			// TODO: move this to StoryTypeServices!!!
-//			StoryTypeRepo str = new StoryTypeRepo();
-			story.setType(context.deserialize(jo.get("type"), StoryType.class));
+			String genreName = context.deserialize(jo.get("genre"), String.class);
+			story.setGenre(new GenreRepo().getByName(genreName));
+			// TODO: move this to StoryTypeServices!!!;
+			String storyType = context.deserialize(jo.get("storyType"), String.class);
+			story.setType(new StoryTypeRepo().getByName(storyType));
 			story.setDescription(context.deserialize(jo.get("description"), String.class));
 			story.setTagLine(context.deserialize(jo.get("tagline"), String.class));
 			story.setCompletionDate(context.deserialize(jo.get("date"), Date.class));
 			story.setSubmissionDate(context.deserialize(jo.get("submission_date"), Date.class));
+			System.out.println("printing out story: " + story);
+			System.out.println(jo);
 			return story;
 		}
 	}

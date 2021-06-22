@@ -22,9 +22,11 @@ function displayStories(){
                 dataSection.innerHTML = '';
 
                 let r = xhttp.responseText;
-                r = JSON.parse(r);
-                let story = JSON.parse(r[0]);
-                let author = JSON.parse(r[1]);
+                r = r.split("|");
+                //r = JSON.parse(r);
+                let story = JSON.parse(r[1]);
+                let author = JSON.parse(r[0]);
+                console.log(story.title);
 
                 //create table
                 let authorTable = document.createElement('table');
@@ -98,7 +100,7 @@ function displayStories(){
 function getEditorMessages(){
     console.log("displaying editor's messages");
     let xhttp = new XMLHttpRequest();
-    xhttp.open("GET", url + "/get_author_stories", true);
+    xhttp.open("GET", url + "/get_editor_messages", true);
     xhttp.send();
     console.log(xhttp.responseText);
 
@@ -117,9 +119,8 @@ function getEditorMessages(){
                 dataSection.innerHTML = '';
 
                 let r = xhttp.responseText;
-                r = JSON.parse(r);
+                let messages = JSON.parse(r);
 
-                console.log(story);
                 //create table
                 let messageTable = document.createElement('table');
                 messageTable.id = 'messageTable';
@@ -147,7 +148,7 @@ function getEditorMessages(){
                 //Editor's Name
                 let tdEditor = document.createElement('td');
                 tdEditor.innerHTML = messages.fromEditor;
-                tr.appendChild(tdEditir);
+                tr.appendChild(tdEditor);
 
                 //Editor's Message
                 let tdEditorMessage = document.createElement('td');
@@ -165,6 +166,10 @@ function getEditorMessages(){
 
 function submitStory(){
     window.location = "/Project1/newwork.html";
+}
+
+function updateStory(){
+    window.location = "/Project1/newdraft.html";
 }
 
 function logout(){

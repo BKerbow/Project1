@@ -102,7 +102,7 @@ public class MessagesRepo implements GenericRepo<Messages> {
 	@Override
 	public Map<Integer, Messages> getAll() {
 
-		String sql = "select * from stories;";
+		String sql = "select * from messages;";
 
 		try {
 			Map<Integer, Messages> map = new HashMap<Integer, Messages>();
@@ -172,9 +172,8 @@ public class MessagesRepo implements GenericRepo<Messages> {
 		//gotta fix the next two lines to get the right title
 		Story s = (new StoryRepo().getById(rs.getInt("id")));
 		m.setTitle(s);
-		Editor e = (new EditorRepo()).getById(rs.getInt("editor"));
+		Editor e = (new EditorRepo()).getById(rs.getInt("fromEditor"));
 		m.setFromEditor(e);
-		StoryType st = (new StoryTypeRepo()).getById(rs.getInt("story_type"));
 		m.setEditorMessage(rs.getString("editorMessage"));
 		m.setAuthorMessage(rs.getString("authorMessage"));
 
