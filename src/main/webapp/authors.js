@@ -56,32 +56,32 @@ function displayStories(){
 
                 //Story Type
                 let tdStoryType = document.createElement('td');
-                tdStoryType = story.type;
+                tdStoryType.innerHTML = story.type;
                 tr.appendChild(tdStoryType);
 
                 //Description
                 let tdDescription = document.createElement('td');
-                tdDescription = story.description;
+                tdDescription.innerHTML = story.description;
                 tr.appendChild(tdDescription);
 
                 //Tag Line
                 let tdTagLine = document.createElement('td');
-                tdTagLine = story.tagLine;
+                tdTagLine.innerHTML = story.tagLine;
                 tr.appendChild(tdTagLine);
 
                 //Completion Date
                 let tdCompletionDate = document.createElement('td');
-                tdCompletionDate = story.completionDate;
+                tdCompletionDate.innerHTML = story.completionDate;
                 tr.appendChild(tdCompletionDate);
                 
                 //Approval Status
                 let tdApprovalStatus = document.createElement('td');
-                tdApprovalStatus = story.approvalStatus;
+                tdApprovalStatus.innerHTML = story.approvalStatus;
                 tr.appendChild(tdApprovalStatus);
 
                 //Reason
                 let tdReason = document.createElement('td');
-                tdReason = story.reason;
+                tdReason.innerHTML = story.reason;
                 tr.appendChild(reason);
 
                 authorTable.appendChild(tr);
