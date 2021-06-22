@@ -119,7 +119,10 @@ function getEditorMessages(){
                 dataSection.innerHTML = '';
 
                 let r = xhttp.responseText;
-                let messages = JSON.parse(r);
+                r = r.split("|");
+                let messages = JSON.parse(r[1]);
+                let otherMessage = JSON.parse(r[0]);
+
 
                 //create table
                 let messageTable = document.createElement('table');

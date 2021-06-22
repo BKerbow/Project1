@@ -164,8 +164,18 @@ public class FrontControllerServlet extends HttpServlet {
 			System.out.println("grabbing author messages");
 			List<Messages> messages = new ArrayList<Messages>(new MessagesRepo().getAll().values());
 			String amjson = new String(this.gson.toJson(messages));
-			json = gson.toJson(amjson);
-			response.getWriter().append(amjson);
+			json = gson.toJson(amjson) + "|" + this.gson.toJson(messages);
+			System.out.println(json);
+			response.getWriter().append(json);
+			break;
+		}
+		case "get_other_editor_messages":{
+			System.out.println("grabbing editor messages");
+			List<Messages> messages = new ArrayList<Messages>(new MessagesRepo().getAll().values());
+			Editor e = (Editor) session.getAttribute("logged_in");
+			String[] mjson = new String[] { this.gson.toJson(messages), this.gson.toJson(e)};
+			json = gson.toJson(e) + "|" + this.gson.toJson(messages);
+			response.getWriter().append(json);
 			break;
 		}
 		default: System.out.println("Sorry, I didn't catch that GET flag."); break;
@@ -225,7 +235,7 @@ public class FrontControllerServlet extends HttpServlet {
 			if(loggedIn instanceof Author) pageURL = "index.html";
 			if(loggedIn instanceof Editor) pageURL = "index.html";
 			System.out.println("Logging you out!");
-			response.getWriter().append(pageURL);
+			response.getWriter().append("index.html");
 			session.invalidate();
 			break;
 		}
@@ -248,9 +258,11 @@ public class FrontControllerServlet extends HttpServlet {
 			System.out.println("I got the new version!");
 			Story s = gson.fromJson(request.getReader(), Story.class);
 			Author a = (Author) session.getAttribute("logged_in");
+			System.out.println(s);
 			s.setAuthor(a);
 			//fix this!!
-			//s = new StoryRepo().update(s);
+			new StoryRepo().update(s);
+			System.out.println("Updated the old version with the new version!");
 			response.getWriter().append("authors.html");
 			break;
 		}

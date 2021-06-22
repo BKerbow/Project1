@@ -77,9 +77,24 @@ public class MessagesRepo implements GenericRepo<Messages> {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return null;
+	}
+	
+public Messages getAuthorMessage(String fromAuthor) {
 		
+		String sql = "select s.title, a.first_name, m.editorMessage from messages m " 
+				+ " left join stories s on m.id = s.id "
+				+ "left join editors a on m.id = a.id "
+				+ "where e.id = ? and s.id = ?;";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, fromAuthor);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) this.make(rs);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public Messages getByAuthorName(String fromAuthor) {
