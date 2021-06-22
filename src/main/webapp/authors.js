@@ -82,7 +82,7 @@ function displayStories(){
                 //Reason
                 let tdReason = document.createElement('td');
                 tdReason.innerHTML = story.reason;
-                tr.appendChild(reason);
+                tr.appendChild(tdReason);
 
                 authorTable.appendChild(tr);
                 }
