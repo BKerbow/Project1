@@ -8,24 +8,29 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 	<script src='authors.js'></script>
+    <style>
+        table, th, td { border: 1px solid black; } 
+        body { margin: 50px; }
+        h1 { text-align: center; }
+        label {
+            width: 100px;
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
     <br>
     <h1>Welcome to the Author Menu!</h1>
     <br>
-    <p>In this page, I want the following information displayed:
-        1. A button that will link to a new html page with a story submission form
-        2. A button that allows the author to submit a filled-in story for review.
-            A) If the author does not have enough points, a message will build:
-                You submitted the work, but you do not have enough points for it to be reviewd. It will be moved
-                into a pending stories list until enough points are freed up.
-        2. A button that allows the author to review any of their pending stories.
-        3. A series of buttons that allow the author to do the following:
-            A) Display any messages that request additional information about a script.
-            B) Display any messages that provide a reason for why their script was rejected.
-            C) Display a textbox that allows the author to reply to an editor or submit any changes to a script.
-            D) Display a textbox that a story was approved.
-        4. A logout button.
+    <p>On this page, you will find the following information:</p>
+    <p style="padding-left: 3em;">1. A button that will display your currently submitted stories. <br>
+        2. A button that displays any messages from the editors.</p>
+    <p style="padding-left: 6em;">A) Under that display, a button will appear</p>
+    <p style="padding-left: 9em;">This will take you to a webpage that will allow you to reply to the editor's message with one of your own.</p>
+    <p style="padding-left: 3em;">3. A button that will allow you to submit a new story.
+    <p style="padding-left: 3em;">4. A button thath will allow you to update an existing story with new information.
+    <p style="padding-left: 3em;">5. A logout button.</p>
     </p>
     <button type="button" onclick="displayStories()">Display Current Stories</button>
     <button type="button" onclick="getEditorMessages()">Display Editor Messages</button>
@@ -34,10 +39,12 @@
     <button type="button" onclick="logout()">Logout</button>
     <br>
     <br>
-    <div id="storyData">
+    <div id="storyData" style="color: rgb(14, 104, 26)">
 
     </div>
-    <div id="editorMessageData">
+    <br>
+    <br>
+    <div id="editorMessageData" style="color:rgb(14, 104, 26)">
 
         
     </div>

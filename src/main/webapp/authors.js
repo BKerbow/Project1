@@ -1,6 +1,7 @@
 let url = "http://localhost:8080/Project1/FrontController"
 
 function displayStories(){
+
     console.log("displaying author's stories");
     let xhttp = new XMLHttpRequest();
     xhttp.open("GET", url + "/get_author_stories", true);
@@ -15,7 +16,7 @@ function displayStories(){
         console.log(xhttp.status);
         if(xhttp.readyState == 4){
             if(xhttp.status == 200){
-                
+
                 console.log(xhttp.responseText);
 
                 let dataSection = document.getElementById('storyData');
@@ -89,6 +90,7 @@ function displayStories(){
                 tr.appendChild(tdReason);
 
                 authorTable.appendChild(tr);
+                authorTable.setAttribute("border", 2);
                 }
                 
                 dataSection.appendChild(authorTable);

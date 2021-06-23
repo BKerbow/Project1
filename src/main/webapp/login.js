@@ -88,8 +88,8 @@ function authorSignUp(){{
     firstName: document.getElementById("first_name").value,
     lastName: document.getElementById("last_name").value,
     bio: document.getElementById("sign_up_bio").value,
-    username: document.getElementById("authorUsername").value,
-    password: document.getElementById("authorPassword").value
+    username: document.getElementById("newAuthorUsername").value,
+    password: document.getElementById("newAuthorPassword").value
     };
     
     console.log("login info:" + authorSignUp);
@@ -130,8 +130,8 @@ function editorSignUp(){
     let editorSignUp = {
     firstName: document.getElementById("edditor_first_name").value,
     lastName: document.getElementById("editor_last_name").value,
-    username: document.getElementById("editorUsername").value,
-    password: document.getElementById("editorPassword").value
+    username: document.getElementById("newEditorUsername").value,
+    password: document.getElementById("newEditorPassword").value
     };
     
     console.log("login info:" + editorSignUp);
