@@ -19,6 +19,7 @@ import com.google.gson.JsonParser;
 
 import dev.kerbow.models.Author;
 import dev.kerbow.models.Editor;
+import dev.kerbow.models.GEJoin;
 import dev.kerbow.models.Genre;
 import dev.kerbow.models.Messages;
 import dev.kerbow.models.Story;
@@ -26,6 +27,7 @@ import dev.kerbow.models.StoryType;
 
 import dev.kerbow.repositories.AuthorRepo;
 import dev.kerbow.repositories.EditorRepo;
+import dev.kerbow.repositories.GEJoinRepo;
 import dev.kerbow.repositories.GenreRepo;
 import dev.kerbow.repositories.MessagesRepo;
 import dev.kerbow.repositories.StoryRepo;
@@ -178,6 +180,15 @@ public class FrontControllerServlet extends HttpServlet {
 			response.getWriter().append(json);
 			break;
 		}
+		case "display_committee_table": {
+			System.out.println("I got the committe table request!");
+			List<GEJoin> committee = new ArrayList<GEJoin>(new GEJoinRepo().getAll().values());
+			Editor e = (Editor) session.getAttribute("logged_in");
+			String[] cjson = new String[] {this.gson.toJson(committee), this.gson.toJson(e)};
+			json = gson.toJson(e) + "|" + this.gson.toJson(committee);
+			response.getWriter().append(json);
+			break;
+		}
 		default: System.out.println("Sorry, I didn't catch that GET flag."); break;
 		}
 	}
@@ -264,6 +275,15 @@ public class FrontControllerServlet extends HttpServlet {
 			new StoryRepo().update(s);
 			System.out.println("Updated the old version with the new version!");
 			response.getWriter().append("authors.html");
+			break;
+		}
+		case "/approve_story":{
+			System.out.println("I got the story approval!");
+			Story s = gson.fromJson(request.getReader(), Story.class);
+			Editor e = (Editor) session.getAttribute("logged_in");
+			System.out.println(s);
+			new StoryRepo().update(s);
+			System.out.println("Approved the Selected Story!");
 			break;
 		}
 		default: System.out.println("Sorry, I didn't get that POST flag."); break;

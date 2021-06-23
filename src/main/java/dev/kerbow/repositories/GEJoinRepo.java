@@ -59,13 +59,13 @@ public class GEJoinRepo implements GenericRepo<GEJoin> {
 
 	@Override
 	public Map<Integer, GEJoin> getAll() {
-		String sql = "select gej.id, g.id as g_id, g.name, e.id as e_id, e.first_name, e.last_name, e.username, e.password, gej.senior, gej.assistant "
+		String sql = "select gej.id, g.id as g_id, g.name, e.id as e_id, e.first_name, e.last_name, e.username, e.password, e.senior, e.assistant "
 				+ "from genre_editor_join gej "
 				+ "full join genres g "
 				+ "on gej.genre = g.id "
 				+ "full join editors e "
 				+ "on gej.editor = e.id "
-				+ "order by gej.senior desc, gej.assistant desc;";
+				+ "order by e.senior desc, e.assistant desc;";
 		try {
 			Map<Integer, GEJoin> map = new HashMap<Integer, GEJoin>();
 			PreparedStatement ps = conn.prepareStatement(sql);
