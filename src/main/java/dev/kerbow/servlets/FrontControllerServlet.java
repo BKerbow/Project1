@@ -35,20 +35,12 @@ import dev.kerbow.repositories.StoryTypeRepo;
 import dev.kerbow.utils.Utils;
 
 public class FrontControllerServlet extends HttpServlet {
+	
+	
 	class LoginInfo {
 		public String username;
 		public String password;
 	}
-	
-
-	//	class StoryInfo {
-	//		public String title;
-	//		public String genre;
-	//		public String type;
-	//		public String description;
-	//		public String tagline;
-	//		public Date date;
-	//	}
 
 	public FrontControllerServlet() {
 		Utils.loadEntries();
@@ -62,13 +54,13 @@ public class FrontControllerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Story.class, new Story.Deserializer());
-		//		gsonBuilder.registerTypeAdapter(Author.class, new Author.Deserializer());
+//		gsonBuilder.registerTypeAdapter(Author.class, new Author.Deserializer());
 		gsonBuilder.setDateFormat("yyyy-MM-dd");
 		this.gson = gsonBuilder.create();
 
 		String uri = request.getRequestURI();
 		System.out.println(uri);
-		String json;
+		String json = "";
 
 		response.setHeader("Access-Control-Allow-Origin", "*");		// Needed to avoid CORS violations
 		response.setHeader("Content-Type", "application/json");		// Needed to enable json data to be passed between front and back end
@@ -77,63 +69,6 @@ public class FrontControllerServlet extends HttpServlet {
 
 		uri = uri.substring("/Project1/FrontController/".length());
 		switch (uri) {
-		case "author_signup": {
-			System.out.println("Received author sign up!");
-			Author a = this.gson.fromJson(request.getReader(), Author.class);
-			if (a != null) {
-				a = new AuthorRepo().add(a);
-				System.out.println("Created the new author " + a + " and logged in!");
-				session.setAttribute("logged_in", a);
-				// TODO: change this to "author_main.html" when it exits!!!
-				response.getWriter().append("authors.html");
-			} else {
-				System.out.println("Failed to create new Author account!");
-			}
-			break;
-		}
-		case "editor_signup": {
-			System.out.println("Received Editor Sign Up!");
-			Editor e = this.gson.fromJson(request.getReader(), Editor.class);
-			if(e != null) {
-				e = new EditorRepo().add(e);
-				System.out.println("Created the new editor " + e + "and logged in!");
-				session.setAttribute("logged_in", e);
-				response.getWriter().append("editors.html");
-			} else {
-				System.out.println("Failed to create new Editor account!");
-			}
-			break;
-		}
-		// TODO: can editor login and author login be combined into the same thing? would require that login info across the two tables be unique
-		case "editor_login": {
-			System.out.println("I got the editor login!");
-			LoginInfo info = this.gson.fromJson(request.getReader(), LoginInfo.class);
-			Editor e = new EditorRepo().getByUsernameAndPassword(info.username, info.password);
-			if (e != null) {
-				System.out.println("Editor " + e.getFirstName() + " has logged in!");
-				session.setAttribute("logged_in", e);
-				response.getWriter().append("editors.html");
-			} else {
-				System.out.println("Failed to login with provided credentials credentials: username=" + info.username + " password=" + info.password);
-			}
-			break;
-		}
-		case "author_login": {
-			System.out.println("I got the author login!");
-			LoginInfo info = this.gson.fromJson(request.getReader(), LoginInfo.class);
-			Author a = new AuthorRepo().getByUsernameAndPassword(info.username, info.password);
-			if (a == null) {
-				System.out.println("An Author with those credentials was not found.");
-			}
-			if (a != null) {
-				System.out.println("The Author " + a.getFirstName() + " has logged in!");
-				session.setAttribute("logged_in", a);
-				response.getWriter().append("authors.html");
-			} else {
-				System.out.println("Failed to login with provided credentials credentials: username=" + info.username + " password=" + info.password);
-			}
-			break;
-		}
 		case "get_story_types": {
 			List<StoryType> types = new ArrayList<StoryType>(new StoryTypeRepo().getAll().values());
 			List<Genre> genres = new ArrayList<Genre>(new GenreRepo().getAll().values());
@@ -157,16 +92,17 @@ public class FrontControllerServlet extends HttpServlet {
 			System.out.println("grabbing editor messages");
 			List<Messages> messages = new ArrayList<Messages>(new MessagesRepo().getAll().values());
 			Author a = (Author) session.getAttribute("logged_in");
-			String[] mjson = new String[] { this.gson.toJson(messages), this.gson.toJson(a)};
-			json = gson.toJson(a) + "|" + this.gson.toJson(messages);
+			String[] mjson = new String[] { this.gson.toJson(messages), this.gson.toJson(a) };
+			json = gson.toJson(messages) + "|" + this.gson.toJson(a);
 			response.getWriter().append(json);
 			break;
 		}
 		case "get_author_messages":{
 			System.out.println("grabbing author messages");
 			List<Messages> messages = new ArrayList<Messages>(new MessagesRepo().getAll().values());
-			String amjson = new String(this.gson.toJson(messages));
-			json = gson.toJson(amjson) + "|" + this.gson.toJson(messages);
+			Editor e = (Editor) session.getAttribute("logged_in");
+			String[] amjson = new String[] { this.gson.toJson(messages), this.gson.toJson(e) };
+			json = gson.toJson(messages) + "|" + this.gson.toJson(e);
 			System.out.println(json);
 			response.getWriter().append(json);
 			break;
@@ -180,13 +116,59 @@ public class FrontControllerServlet extends HttpServlet {
 			response.getWriter().append(json);
 			break;
 		}
-		case "display_committee_table": {
-			System.out.println("I got the committe table request!");
-			List<GEJoin> committee = new ArrayList<GEJoin>(new GEJoinRepo().getAll().values());
-			Editor e = (Editor) session.getAttribute("logged_in");
-			String[] cjson = new String[] {this.gson.toJson(committee), this.gson.toJson(e)};
-			json = gson.toJson(e) + "|" + this.gson.toJson(committee);
-			response.getWriter().append(json);
+		case "get_proposals":{
+			Object logged_in = session.getAttribute("logged_in");
+			if(logged_in instanceof Author) {
+				Author a = (Author) logged_in;
+				System.out.println(a);
+				List<Story> stories = new StoryRepo().getAllByAuthor(a.getId());
+				json = "author|" + this.gson.toJson(stories);
+				response.getWriter().append(json);
+			} else if(logged_in instanceof Editor) {
+				Editor e = (Editor) session.getAttribute("logged_in");
+				System.out.println(e);
+				Set<Genre> genres = Utils.getGenres(e);
+				List<Story> stories = new ArrayList<Story>();
+				
+				for (Genre g : genres) {
+					System.out.println(g);
+					if(e.getSenior()) {
+						stories.addAll(new StoryRepo().getAllByGenreAndStatus(g, "approved_editor"));
+					} else if(e.getAssistant()) {
+						stories.addAll(new StoryRepo().getAllByGenreAndStatus(g, "submitted"));
+					} else {
+						String status = "approved_assistant";
+						if (g.getName().equals("fantasy")) {
+							Genre scienceFiction = new GenreRepo().getByName("science-fiction");
+							stories.addAll(new StoryRepo().getAllByGenreAndStatus(scienceFiction, status));
+						} else if (g.getName().equals("science-fiction")) {
+							Genre mystery = new GenreRepo().getByName("mystery");
+							stories.addAll(new StoryRepo().getAllByGenreAndStatus(mystery, status));
+						} else if (g.getName().equals("mystery")) {
+							Genre article = new GenreRepo().getByName("article");
+							stories.addAll(new StoryRepo().getAllByGenreAndStatus(article, status));
+						} else if (g.getName().equals("article")) {
+							Genre nonfiction = new GenreRepo().getByName("nonfiction");
+							stories.addAll(new StoryRepo().getAllByGenreAndStatus(nonfiction, status));
+						} else if (g.getName().equals("nonfiction")) {
+							Genre fantasy = new GenreRepo().getByName("fantasy");
+							stories.addAll(new StoryRepo().getAllByGenreAndStatus(fantasy, status));
+						}
+					}
+				}
+				String flag = "general|";
+				if (e.getAssistant()) flag = "assistant|";
+				else if (e.getSenior()) flag = "senior|";
+				json = flag + this.gson.toJson(stories);
+				
+				response.getWriter().append(json);
+			}
+			break;
+		}
+		case "save_story_to_session": {
+			JsonElement root = JsonParser.parseReader(request.getReader());
+			session.setAttribute("story", root.getAsJsonObject());
+			response.getWriter().append("saved");
 			break;
 		}
 		default: System.out.println("Sorry, I didn't catch that GET flag."); break;
@@ -250,19 +232,46 @@ public class FrontControllerServlet extends HttpServlet {
 			session.invalidate();
 			break;
 		}
-		case "submit_new_work":{
-			System.out.println("I got the new work!");
-			Story s = gson.fromJson(request.getReader(), Story.class);
-			if (session.getAttribute("logged_in") instanceof Author) {
-				System.out.println("author");
+		case "author_signup": {
+			System.out.println("Received author sign up!");
+			Author a = this.gson.fromJson(request.getReader(), Author.class);
+			if (a != null) {
+				a = new AuthorRepo().add(a);
+				System.out.println("Created the new author " + a + " and logged in!");
+				session.setAttribute("logged_in", a);
+				response.getWriter().append("authors.html");
 			} else {
-				System.out.println("editor");
+				System.out.println("Failed to create new Author account!");
 			}
+			break;
+		}
+		case "editor_signup": {
+			System.out.println("Received Editor Sign Up!");
+			Editor e = this.gson.fromJson(request.getReader(), Editor.class);
+			if(e != null) {
+				e = new EditorRepo().add(e);
+				System.out.println("Created the new editor " + e + "and logged in!");
+				session.setAttribute("logged_in", e);
+				response.getWriter().append("editors.html");
+			} else {
+				System.out.println("Failed to create new Editor account!");
+			}
+			break;
+		}
+		case "submit_story_form": {
+			Story story = this.gson.fromJson(request.getReader(), Story.class);
 			Author a = (Author) session.getAttribute("logged_in");
-			s.setAuthor(a);
-			s = new StoryRepo().add(s);
-			System.out.println("Added the story to the database!");
-			response.getWriter().append("authors.html");
+			if (a.getPoints() < story.getType().getPoints()) {
+				story.setApprovalStatus("waiting");
+			} else {
+				story.setApprovalStatus("submitted");
+				a.setPoints(a.getPoints() - story.getType().getPoints());
+				new AuthorRepo().update(a);
+			}
+			story.setAuthor(a);
+			story.setModified(false);
+			story = new StoryRepo().add(story);
+			System.out.println(story);
 			break;
 		}
 		case "submit_draft_update":{
@@ -271,13 +280,12 @@ public class FrontControllerServlet extends HttpServlet {
 			Author a = (Author) session.getAttribute("logged_in");
 			System.out.println(s);
 			s.setAuthor(a);
-			//fix this!!
 			new StoryRepo().update(s);
 			System.out.println("Updated the old version with the new version!");
 			response.getWriter().append("authors.html");
 			break;
 		}
-		case "/approve_story":{
+		case "approve_story":{
 			System.out.println("I got the story approval!");
 			Story s = gson.fromJson(request.getReader(), Story.class);
 			Editor e = (Editor) session.getAttribute("logged_in");

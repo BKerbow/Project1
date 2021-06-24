@@ -1,9 +1,7 @@
 package dev.kerbow.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,25 +15,20 @@ public class Utils {
 	private static Map<Genre, Set<Editor>> gToE = new HashMap<Genre, Set<Editor>>();
 	private static GEJoinRepo gejr = new GEJoinRepo();
 	
-	public static Set<Genre> getGenres(Editor e){
+	public static Set<Genre> getGenres(Editor e) {
 		return eToG.get(e);
 	}
 	
-	public static Set<Editor> getEditors(Genre g){
+	public static Set<Editor> getEditors(Genre g) {
 		return gToE.get(g);
 	}
 	
-	public static void addEntry(Genre g, Editor e) {
+	public static void addEntry(Genre g, Editor e, boolean senior, boolean assistant) {
 		Set<Genre> gSet = eToG.get(e);
 		Set<Editor> eSet = gToE.get(g);
 		
-		if(gSet == null) {
-			gSet = new HashSet<Genre>();
-		}
-		
-		if(eSet == null) {
-			eSet = new HashSet<Editor>();
-		}
+		if (gSet == null) gSet = new HashSet<Genre>();
+		if (eSet == null) eSet = new HashSet<Editor>();
 		
 		gSet.add(g);
 		eSet.add(e);
@@ -57,8 +50,8 @@ public class Utils {
 			Set<Genre> gSet = eToG.get(e);
 			Set<Editor> eSet = gToE.get(g);
 			
-			if(gSet == null) gSet = new HashSet<Genre>();
-			if(eSet == null) eSet = new HashSet<Editor>();
+			if (gSet == null) gSet = new HashSet<Genre>();
+			if (eSet == null) eSet = new HashSet<Editor>();
 			
 			gSet.add(g);
 			eSet.add(e);
@@ -67,5 +60,4 @@ public class Utils {
 			gToE.put(g, eSet);
 		}
 	}
-
 }

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.kerbow.models.Editor;
+import dev.kerbow.models.Story;
 import dev.kerbow.utils.JDBCConnection;
 
 public class EditorRepo implements GenericRepo<Editor> {
@@ -83,6 +84,33 @@ public class EditorRepo implements GenericRepo<Editor> {
 		
 		return null;
 	}
+	
+	public Editor getAssistantLevel(boolean assistant) {
+		String sql = "select * from editors where assistant = true;";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, assistant);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) return this.make(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Editor getSeniorLevel(boolean senior) {
+		String sql = "select * from editors where senior = true;";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, senior);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) return this.make(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 
 	@Override
 	public boolean update(Editor e) {
@@ -118,6 +146,8 @@ public class EditorRepo implements GenericRepo<Editor> {
 		e.setLastName(rs.getString("last_name"));
 		e.setUsername(rs.getString("username"));
 		e.setPassword(rs.getString("password"));
+		e.setAssistant(rs.getBoolean("assistant"));
+		e.setSenior(rs.getBoolean("senior"));
 		return e;
 	}
 }

@@ -26,7 +26,10 @@ public class Story {
 	private String approvalStatus;
 	private String reason;
 	private Date submissionDate;
+	private Boolean modified;
 	
+	
+
 	public Story() {}
 
 	public Integer getId() {
@@ -125,6 +128,14 @@ public class Story {
 	public void setCompletionStatus(String completionStatus) {
 		this.completionStatus = completionStatus;
 	}
+	
+	public Boolean getModified() {
+		return modified;
+	}
+
+	public void setModified(Boolean modified) {
+		this.modified = modified;
+	}
 
 	@Override
 	public int hashCode() {
@@ -137,6 +148,7 @@ public class Story {
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((genre == null) ? 0 : genre.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((modified == null) ? 0 : modified.hashCode());
 		result = prime * result + ((reason == null) ? 0 : reason.hashCode());
 		result = prime * result + ((submissionDate == null) ? 0 : submissionDate.hashCode());
 		result = prime * result + ((tagLine == null) ? 0 : tagLine.hashCode());
@@ -189,6 +201,11 @@ public class Story {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (modified == null) {
+			if (other.modified != null)
+				return false;
+		} else if (!modified.equals(other.modified))
+			return false;
 		if (reason == null) {
 			if (other.reason != null)
 				return false;
@@ -222,7 +239,7 @@ public class Story {
 		return "Story [id=" + id + ", title=" + title + ", genre=" + genre + ", type=" + type + ", author=" + author
 				+ ", description=" + description + ", tagLine=" + tagLine + ", completionDate=" + completionDate
 				+ ", completionStatus=" + completionStatus + ", approvalStatus=" + approvalStatus + ", reason=" + reason
-				+ ", submissionDate=" + submissionDate + "]";
+				+ ", submissionDate=" + submissionDate + ", modified=" + modified + "]";
 	}
 	
 	public static class Deserializer implements JsonDeserializer<Story> {
@@ -256,6 +273,7 @@ public class Story {
 			story.setCompletionDate(context.deserialize(jo.get("date"), Date.class));
 			story.setCompletionStatus(context.deserialize(jo.get("completionStatus"), String.class));
 			story.setSubmissionDate(context.deserialize(jo.get("submissionDate"), Date.class));
+			story.setModified(context.deserialize(jo.get("modified"), Boolean.class));
 			System.out.println("printing out story: " + story);
 			System.out.println(jo);
 			return story;
